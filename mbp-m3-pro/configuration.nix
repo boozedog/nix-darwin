@@ -37,6 +37,7 @@
       "btop"
       "chezmoi"
       "helix"
+      "starship"
       "tig"
       "zellij"
     ];
