@@ -45,10 +45,16 @@
       "alt-tab"
       "amethyst"
       "brave-browser"
+      "claude-code"
       "obsidian"
       "ghostty"
     ];
   };
+
+  security.pam.services.sudo_local = {
+    enable = true;
+    touchIdAuth = true;
+  }; 
 
   system = {
     primaryUser = "root";
