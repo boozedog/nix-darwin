@@ -1,18 +1,21 @@
-{ pkgs, self, ... }: {
+{ pkgs, self, ... }:
+{
   networking.hostName = "mbp-m3-pro";
-  
+
   environment = {
     systemPackages = with pkgs; [
       awk-language-server
-      dockerfile-language-server-nodejs
+      direnv
+      dockerfile-language-server
+      nil
       nixd
       nodePackages.vscode-json-languageserver
     ];
     shells = with pkgs; [
-      fish  
+      fish
     ];
   };
- 
+
   programs = {
     fish.enable = true;
     # nixvim = {
@@ -26,12 +29,12 @@
   };
 
   services.tailscale.enable = true;
-  
+
   fonts.packages = [
     pkgs.inter
     pkgs.maple-mono.NL-NF
   ];
-  
+
   homebrew = {
     enable = true;
     user = "david";
@@ -58,13 +61,14 @@
       "claude-code"
       "obsidian"
       "ghostty"
+      "zed"
     ];
   };
 
   security.pam.services.sudo_local = {
     enable = true;
     touchIdAuth = true;
-  }; 
+  };
 
   system = {
     primaryUser = "root";
