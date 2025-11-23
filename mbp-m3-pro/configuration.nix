@@ -1,8 +1,13 @@
 { pkgs, self, ... }: {
   networking.hostName = "mbp-m3-pro";
   
-  environment.systemPackages = with pkgs; [
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+    ];
+    shells = with pkgs; [
+      fish  
+    ];
+  };
  
   programs = {
     fish.enable = true;
@@ -28,16 +33,19 @@
     user = "david";
     brews = [
       "aichat"
+      "bat"
       "btop"
+      "chezmoi"
       "helix"
       "tig"
+      "zellij"
     ];
     casks = [
-      "obsidian"
-      "brave-browser"
-      "ghostty"
       "alt-tab"
       "amethyst"
+      "brave-browser"
+      "obsidian"
+      "ghostty"
     ];
   };
 
