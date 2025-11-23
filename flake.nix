@@ -51,17 +51,17 @@
           # inputs.nixvim.nixDarwinModules.nixvim
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
-          (
-            {
-              config,
-              pkgs,
-              lib,
-              ...
-            }:
-            {
-              # Inline nix-darwin configuration
-            }
-          )
+          # (
+          #   {
+          #     config,
+          #     pkgs,
+          #     lib,
+          #     ...
+          #   }:
+          #   {
+          #     # Inline nix-darwin configuration
+          #   }
+          # )
         ];
         specialArgs = { inherit inputs self; };
       };
@@ -71,9 +71,9 @@
         # Some base configuration
         base =
           {
-            config,
-            pkgs,
-            lib,
+            # config,
+            # pkgs,
+            # lib,
             ...
           }:
           {
@@ -93,9 +93,9 @@
         # Nix configuration
         nixConfig =
           {
-            config,
-            pkgs,
-            lib,
+            # config,
+            # pkgs,
+            # lib,
             ...
           }:
           {
