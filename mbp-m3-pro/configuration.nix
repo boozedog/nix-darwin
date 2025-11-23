@@ -3,6 +3,10 @@
   
   environment = {
     systemPackages = with pkgs; [
+      awk-language-server
+      dockerfile-language-server-nodejs
+      nixd
+      nodePackages.vscode-json-languageserver
     ];
     shells = with pkgs; [
       fish  
@@ -36,9 +40,15 @@
       "bat"
       "btop"
       "chezmoi"
+      "docker-compose-langserver"
+      "fish-lsp"
       "helix"
+      "prettier"
       "starship"
       "tig"
+      "tombi"
+      "typescript-language-server"
+      "yaml-language-server"
       "zellij"
     ];
     casks = [
