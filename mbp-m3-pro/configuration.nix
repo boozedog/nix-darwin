@@ -46,6 +46,8 @@
       "docker-compose-langserver"
       "fish-lsp"
       "helix"
+      "lazydocker"
+      "lazygit"
       "prettier"
       "starship"
       "tig"
@@ -55,12 +57,20 @@
       "zellij"
     ];
     casks = [
+      # "alacritty"
       "alt-tab"
       "amethyst"
       "brave-browser"
       "claude-code"
+      "google-chrome"
+      # "hyper"
+      # "kitty"
+      "microsoft-edge"
       "obsidian"
       "ghostty"
+      "ungoogled-chromium"
+      "warp"
+      # "wezterm"
       "zed"
     ];
   };
