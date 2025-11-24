@@ -9,6 +9,7 @@
       dockerfile-language-server
       nil
       nixd
+      nixfmt
       nodePackages.vscode-json-languageserver
     ];
     shells = with pkgs; [
