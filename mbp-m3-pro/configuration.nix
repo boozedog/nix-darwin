@@ -15,6 +15,9 @@
     shells = with pkgs; [
       fish
     ];
+    variables = {
+      EDITOR = "hx";
+    };
   };
 
   programs = {
@@ -50,6 +53,7 @@
       "helix"
       "lazydocker"
       "lazygit"
+      "opencode"
       "prettier"
       "starship"
       "tig"
