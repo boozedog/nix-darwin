@@ -1,0 +1,10 @@
+{
+  "nixpkgs": {
+    "expr": "import <nixpkgs> {}"
+  },
+  "options": {
+    "darwin": {
+      "expr": "(builtins.getFlake (toString ./.)).darwinConfigurations.mbp-m3-pro.options"
+    }
+  }
+}
