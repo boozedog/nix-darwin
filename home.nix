@@ -1,4 +1,8 @@
-{ config, pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -28,20 +32,32 @@
         set -g fish_greeting
       '';
       plugins = [
-        { name = "autopair"; src = pkgs.fishPlugins.autopair; }
-        { name = "done"; src = pkgs.fishPlugins.done; }
-        { name = "forgit"; src = pkgs.fishPlugins.forgit; }
-        #{ name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish; } # broken
-        { name = "macos"; src = pkgs.fishPlugins.macos; }
-        { name = "sponge"; src = pkgs.fishPlugins.sponge; }
+        {
+          name = "autopair";
+          src = pkgs.fishPlugins.autopair.src;
+        }
+        {
+          name = "done";
+          src = pkgs.fishPlugins.done.src;
+        }
+        {
+          name = "forgit";
+          src = pkgs.fishPlugins.forgit.src;
+        }
+        {
+          name = "fzf-fish";
+          src = pkgs.fishPlugins.fzf-fish.src;
+        } # broken
+        {
+          name = "macos";
+          src = pkgs.fishPlugins.macos.src;
+        }
+        {
+          name = "sponge";
+          src = pkgs.fishPlugins.sponge.src;
+        }
       ];
       shellAbbrs = {
-        gs = "git status";
-        gl = "git log --oneline --graph --decorate";
-        gd = "git diff";
-        gc = "git commit";
-        gp = "git push";
-        # command wrappers
         ai = "aichat";
         l = "ls -lah";
         ls = "eza --long --all --git";
@@ -94,7 +110,11 @@
           '';
           when = true;
           format = "[$output](bold green) ";
-          shell = ["bash" "--noprofile" "--norc"];
+          shell = [
+            "bash"
+            "--noprofile"
+            "--norc"
+          ];
         };
       };
     };
@@ -111,8 +131,8 @@
   };
 
   manual = {
-    html.enable = false;  # Skip HTML manual
-    json.enable = false;  # Skip JSON (options.json source)
+    html.enable = false; # Skip HTML manual
+    json.enable = false; # Skip JSON (options.json source)
     manpages.enable = false;
   };
 }

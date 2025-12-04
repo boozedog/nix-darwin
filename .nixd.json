@@ -1,10 +1,13 @@
 {
   "nixpkgs": {
-    "expr": "import <nixpkgs> {}"
+    "expr": "import (builtins.getFlake (toString ./.)).inputs.nixpkgs { system = \"aarch64-darwin\"; }"
   },
   "options": {
     "darwin": {
       "expr": "(builtins.getFlake (toString ./.)).darwinConfigurations.mbp-m3-pro.options"
+    },
+    "home-manager": {
+      "expr": "(builtins.getFlake (toString ./.)).homeConfigurations.david.options"
     }
   }
 }
