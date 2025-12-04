@@ -19,6 +19,10 @@
     #   url = "github:nix-community/nixvim";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Flake outputs
@@ -35,6 +39,8 @@
       # Your system type (Apple Silicon here)
       # Change this to `x86_64-darwin` for Intel macOS
       system = "aarch64-darwin";
+
+      pkgs = import inputs.nixpkgs { inherit system; };
     in
     {
       # nix-darwin configuration output
@@ -49,6 +55,17 @@
           # Apply any other imported modules here
           ./mbp-m3-pro/configuration.nix
           # inputs.nixvim.nixDarwinModules.nixvim
+          inputs.home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.david = ./home.nix;
+            };
+
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
+          }
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
           # (
@@ -64,6 +81,12 @@
           # )
         ];
         specialArgs = { inherit inputs self; };
+      };
+
+      homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./home.nix ];
+        extraSpecialArgs = { inherit self; };
       };
 
       # nix-darwin module outputs
@@ -114,14 +137,12 @@
             };
           };
 
+
         # Add other module outputs here
       };
 
       # Development environment
       devShells.${system}.default =
-        let
-          pkgs = import inputs.nixpkgs { inherit system; };
-        in
         pkgs.mkShellNoCC {
           packages = with pkgs; [
             # Shell script for applying the nix-darwin configuration.

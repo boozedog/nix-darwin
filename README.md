@@ -1,6 +1,16 @@
 # nix-darwin
 
-## update
+## update home-manager config only
+
+```sh
+nix run github:nix-community/home-manager#home-manager -- switch --flake .#david
+# reload fish config
+source ~/.config/fish/config.fish
+# reload zsh config
+. ~/.zshrc
+```
+
+## update system (including home-manager config)
 
 ```sh
 sudo darwin-rebuild switch --flake ~/projects/nix-darwin#mbp-m3-pro

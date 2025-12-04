@@ -1,4 +1,4 @@
-{ pkgs, self, ... }:
+{ pkgs, self, lib,... }:
 {
   networking.hostName = "mbp-m3-pro";
 
@@ -7,19 +7,25 @@
       awk-language-server
       #direnv
       dockerfile-language-server
+      #fishPlugins.forgit
       git
       git-extras
+      helix
       nil
       nixd
       nixfmt
       nodePackages.npm-check-updates
       nodePackages.vscode-json-languageserver
+      #orbstack # use brew
       terminal-notifier
-      trippy
-      tmux
+      tree # claude is always trying to use this
+      zinit
+      #zsh-forgit
     ];
     shells = with pkgs; [
+      bash
       fish
+      zsh
     ];
     variables = {
       EDITOR = "hx";
@@ -34,44 +40,46 @@
   homebrew = {
     enable = true;
     user = "david";
+    onActivation.cleanup = "zap";
     brews = [
-      "aichat"
+      #"aichat" # use home manager
       "asitop"
       "bat"
       "btop"
-      "chezmoi"
-      #"container"
+      #"chezmoi" # use home manager
+      #"container" # using orbstack
       "docker-compose-langserver"
-      "duf"
-      "eza"
+      #"duf" # use nix
+      #"eza" # use nix
       "fish-lsp"
-      "forgit"
-      "fzf"
-      #"gping" # using trippy now
-      "helix"
+      #"forgit" # use nix
+      #"fzf" # use nix
+      #"gping" # using trippy
+      #"helix" # use nix
       "lazydocker"
-      #"lazygit" # using forgit now
+      #"lazygit" # using forgit
       "opencode"
       "pnpm"
       "prettier"
-      "ripgrep"
-      "starship"
-      #"tig" # using forgit now
+      #"ripgrep" # use nix
+      #"starship" # use nix
+      #"tig" # using forgit
       "tombi"
       "topgrade"
       "typescript-language-server"
       "yaml-language-server"
-      #"zellij" # using tmux now
+      #"zellij" # using tmux
     ];
     casks = [
-      # "alacritty"
+      #"alacritty" # using ghostty
       "alt-tab"
       "amethyst"
       "beyond-compare"
       "brave-browser"
       "claude"
       "claude-code"
-      "google-chrome"
+      "ghostty"
+      #"google-chrome" using brave
       #"hyper" # using ghostty
       #"kitty" # using ghostty
       "localsend"
@@ -80,13 +88,15 @@
       "obsidian"
       "orbstack"
       "postgres-unofficial"
-      "ghostty"
-      "ungoogled-chromium"
-      "vscodium"
+      "steam"
+      "tailscale-app"
+      #"ungoogled-chromium" # using brave
+      "visual-studio-code"
+      #"vscodium"
       #"warp" # nah
       #"wezterm" # using ghostty
       "yaak"
-      "zed"
+      #"zed" # using visual-studio-code
     ];
   };
 
@@ -102,6 +112,7 @@
     #   	web-devicons.enable = true;
     #   };
     # };
+    zsh.enable = true;
   };
 
   security.pam.services.sudo_local = {
@@ -110,7 +121,7 @@
   };
 
   services = {
-    tailscale.enable = true;
+    #tailscale.enable = true; # use brew
     openssh = {
       enable = true;
       extraConfig = ''
