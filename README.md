@@ -13,7 +13,7 @@ source ~/.config/fish/config.fish
 ## update system (including home-manager config)
 
 ```sh
-sudo darwin-rebuild switch --flake ~/projects/nix-darwin#mbp-m3-pro
+sudo --preserve-env=NIX_CONFIG darwin-rebuild switch --flake ~/projects/nix-darwin
 ```
 
 ## initial

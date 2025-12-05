@@ -1,4 +1,8 @@
-{ pkgs, self, lib,... }:
+{
+  pkgs,
+  self,
+  ...
+}:
 {
   networking.hostName = "mbp-m3-pro";
 
@@ -8,10 +12,11 @@
       #direnv
       dockerfile-language-server
       #fishPlugins.forgit
+      gh
       git
       git-extras
       helix
-      nil
+      komorebi-full
       nixd
       nixfmt
       nodePackages.npm-check-updates
@@ -40,7 +45,11 @@
   homebrew = {
     enable = true;
     user = "david";
-    onActivation.cleanup = "zap";
+    onActivation.cleanup = "uninstall";
+    # taps = [
+    #   #"koekeishiya/formulae"
+    #   #"lgug2z/tap"
+    # ];
     brews = [
       #"aichat" # use home manager
       "asitop"
@@ -58,10 +67,13 @@
       #"helix" # use nix
       "lazydocker"
       #"lazygit" # using forgit
+      #"komorebi-for-mac-nightly" # use nix flake for this
       "opencode"
       "pnpm"
       "prettier"
       #"ripgrep" # use nix
+      "sketchybar"
+      #"koekeishiya/formulae/skhd" # use nix
       #"starship" # use nix
       #"tig" # using forgit
       "tombi"
@@ -78,8 +90,9 @@
       "brave-browser"
       "claude"
       "claude-code"
+      "discord"
       "ghostty"
-      #"google-chrome" using brave
+      "google-chrome"
       #"hyper" # using ghostty
       #"kitty" # using ghostty
       "localsend"
@@ -132,29 +145,112 @@
   };
 
   system = {
-    primaryUser = "root";
+    primaryUser = "david";
     configurationRevision = self.rev or self.dirtyRev or null;
     defaults = {
       CustomUserPreferences = {
         "com.apple.AppleMultitouchTrackpad" = {
           ForceSuppressed = true;
         };
+        "com.apple.dock" = {
+          workspaces-swoosh-animation-off = true;
+          springboard-show-duration = 0.0;
+          springboard-hide-duration = 0.0;
+        };
+        "com.apple.finder" = {
+          FXEnableSlowAnimation = false;
+        };
+        "com.apple.symbolichotkeys" = {
+          AppleSymbolicHotKeys = {
+            # Switch to Desktop 1-6 (Ctrl+1 through Ctrl+6)
+            "118" = {
+              enabled = true;
+              value = {
+                parameters = [
+                  65535
+                  18
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            "119" = {
+              enabled = true;
+              value = {
+                parameters = [
+                  65535
+                  19
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            "120" = {
+              enabled = true;
+              value = {
+                parameters = [
+                  65535
+                  20
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            "121" = {
+              enabled = true;
+              value = {
+                parameters = [
+                  65535
+                  21
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            "122" = {
+              enabled = true;
+              value = {
+                parameters = [
+                  65535
+                  23
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            "123" = {
+              enabled = true;
+              value = {
+                parameters = [
+                  65535
+                  22
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+          };
+        };
       };
       dock = {
-        expose-animation-duration = 0.1;
+        autohide-delay = 0.0;
+        autohide-time-modifier = 0.0;
+        expose-animation-duration = 0.0;
         magnification = true;
         wvous-br-corner = 1;
       };
+      universalaccess.reduceMotion = true;
       NSGlobalDomain = {
         "com.apple.keyboard.fnState" = true;
         AppleShowAllExtensions = true;
-        NSAutomaticWindowAnimationsEnabled = false;
-        NSWindowResizeTime = 0.001;
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticDashSubstitutionEnabled = false;
         NSAutomaticPeriodSubstitutionEnabled = false;
         NSAutomaticQuoteSubstitutionEnabled = false;
         NSAutomaticSpellingCorrectionEnabled = false;
+        NSAutomaticWindowAnimationsEnabled = false;
+        NSScrollAnimationEnabled = false;
+        NSWindowResizeTime = 0.0;
       };
     };
   };

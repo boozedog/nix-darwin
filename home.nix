@@ -20,10 +20,22 @@
   # changes in each release.
   home.stateVersion = "25.11";
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  # Add Homebrew to PATH for all shells
+  home.sessionPath = [
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+  ];
+
+  manual = {
+    html.enable = false; # Skip HTML manual
+    json.enable = false; # Skip JSON (options.json source)
+    manpages.enable = false;
+  };
 
   programs = {
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
+
     # shells
     bash.enable = true;
     fish = {
@@ -73,10 +85,15 @@
         if status is-interactive
           # Bitwarden SSH agent socket (macOS app location)
           set -x SSH_AUTH_SOCK ~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
+          # GitHub access token for private flake inputs
+          set -x NIX_CONFIG "access-tokens = github.com="(gh auth token)
+          # GitHub access token for Homebrew (for private tap formulas)
+          set -x HOMEBREW_GITHUB_API_TOKEN (gh auth token)
         end
       '';
     };
     zsh.enable = true;
+
     # utilities
     aichat.enable = true;
     eza = {
@@ -128,11 +145,5 @@
       enableFishIntegration = true;
       enableZshIntegration = true;
     };
-  };
-
-  manual = {
-    html.enable = false; # Skip HTML manual
-    json.enable = false; # Skip JSON (options.json source)
-    manpages.enable = false;
   };
 }

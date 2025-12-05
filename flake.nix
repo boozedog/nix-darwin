@@ -23,6 +23,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    komorebi-for-mac.url = "github:KomoCorp/komorebi-for-mac";
   };
 
   # Flake outputs
@@ -40,13 +41,14 @@
       # Change this to `x86_64-darwin` for Intel macOS
       system = "aarch64-darwin";
 
-      pkgs = import inputs.nixpkgs { inherit system; };
     in
     {
       # nix-darwin configuration output
       darwinConfigurations."mbp-m3-pro" = inputs.nix-darwin.lib.darwinSystem {
-        inherit system;
         modules = [
+          { nixpkgs.hostPlatform = system; }
+          # Add the komorebi-for-mac overlay
+          { nixpkgs.overlays = [ inputs.komorebi-for-mac.overlays.default ]; }
           # Add the determinate nix-darwin module
           inputs.determinate.darwinModules.default
           # Apply the modules output by this flake
@@ -84,7 +86,7 @@
       };
 
       homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
         modules = [ ./home.nix ];
         extraSpecialArgs = { inherit self; };
       };
@@ -105,6 +107,7 @@
 
             users.users.${username} = {
               name = username;
+              uid = 501; # from `id -u`
               # See the reference docs for more on user config:
               # https://nix-darwin.github.io/nix-darwin/manual/#opt-users.users
             };
@@ -137,32 +140,34 @@
             };
           };
 
-
         # Add other module outputs here
       };
 
       # Development environment
       devShells.${system}.default =
+        let
+          pkgs = inputs.nixpkgs.legacyPackages.${system};
+        in
         pkgs.mkShellNoCC {
           packages = with pkgs; [
-            # Shell script for applying the nix-darwin configuration.
-            # Run this to apply the configuration in this flake to your macOS system.
-            (writeShellApplication {
-              name = "apply-nix-darwin-configuration";
-              runtimeInputs = [
-                # Make the darwin-rebuild package available in the script
-                inputs.nix-darwin.packages.${system}.darwin-rebuild
-              ];
-              text = ''
-                echo "> Applying nix-darwin configuration..."
+          # Shell script for applying the nix-darwin configuration.
+          # Run this to apply the configuration in this flake to your macOS system.
+          (writeShellApplication {
+            name = "apply-nix-darwin-configuration";
+            runtimeInputs = [
+              # Make the darwin-rebuild package available in the script
+              inputs.nix-darwin.packages.${system}.darwin-rebuild
+            ];
+            text = ''
+              echo "> Applying nix-darwin configuration..."
 
-                echo "> Running darwin-rebuild switch as root..."
-                sudo darwin-rebuild switch --flake .
-                echo "> darwin-rebuild switch was successful ✅"
+              echo "> Running darwin-rebuild switch as root..."
+              sudo --preserve-env=NIX_CONFIG darwin-rebuild switch --flake .
+              echo "> darwin-rebuild switch was successful ✅"
 
-                echo "> macOS config was successfully applied 🚀"
-              '';
-            })
+              echo "> macOS config was successfully applied 🚀"
+            '';
+          })
 
             self.formatter.${system}
           ];
