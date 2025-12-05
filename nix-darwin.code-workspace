@@ -1,18 +1,21 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"nix.enableLanguageServer": true,
-		"nix.serverPath": "nixd",
-		"nix.serverSettings": {
-			"nixd": {
-				"formatting": {
-					"command": ["nixfmt"]
-				}
-			}
-		}
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "nix.enableLanguageServer": true,
+    "nix.serverPath": "nixd",
+    "triggerTaskOnSave.tasks": {
+      "statix check": ["**/*.nix"]
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "gruntfuggly.triggertaskonsave",
+      "davidanson.vscode-markdownlint",
+      "jnoortheen.nix-ide"
+    ]
+  }
 }

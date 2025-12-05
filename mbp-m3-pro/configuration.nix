@@ -16,12 +16,13 @@
       git
       git-extras
       helix
-      komorebi-full
+      #komorebi-full
       nixd
       nixfmt
       nodePackages.npm-check-updates
       nodePackages.vscode-json-languageserver
       #orbstack # use brew
+      statix
       terminal-notifier
       tree # claude is always trying to use this
       zinit
@@ -32,9 +33,7 @@
       fish
       zsh
     ];
-    variables = {
-      EDITOR = "hx";
-    };
+    # EDITOR is set by nixvim.defaultEditor in home.nix
   };
 
   fonts.packages = [

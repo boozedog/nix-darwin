@@ -1,5 +1,5 @@
 {
-  description = "A flake template for nix-darwin and Determinate Nix";
+  description = "nix-darwin configuration";
 
   # Flake inputs
   inputs = {
@@ -10,20 +10,23 @@
       url = "https://flakehub.com/f/nix-darwin/nix-darwin/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Determinate 3.* module
-    determinate = {
-      url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
-      inputs.nixpkgs.follows = "nixpkgs";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      #inputs.nixpkgs.follows = "nixpkgs";
     };
-    # nixvim = {
-    #   url = "github:nix-community/nixvim";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    komorebi-for-mac.url = "github:KomoCorp/komorebi-for-mac";
+    #komorebi-for-mac.url = "github:KomoCorp/komorebi-for-mac";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Flake outputs
@@ -41,6 +44,23 @@
       # Change this to `x86_64-darwin` for Intel macOS
       system = "aarch64-darwin";
 
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+
+      # Treefmt configuration
+      treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+
+      # Pre-commit hooks
+      pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          treefmt = {
+            enable = true;
+            package = treefmtEval.config.build.wrapper;
+          };
+          statix.enable = true;
+        };
+      };
+
     in
     {
       # nix-darwin configuration output
@@ -48,12 +68,9 @@
         modules = [
           { nixpkgs.hostPlatform = system; }
           # Add the komorebi-for-mac overlay
-          { nixpkgs.overlays = [ inputs.komorebi-for-mac.overlays.default ]; }
-          # Add the determinate nix-darwin module
-          inputs.determinate.darwinModules.default
+          #{ nixpkgs.overlays = [ inputs.komorebi-for-mac.overlays.default ]; }
           # Apply the modules output by this flake
           self.darwinModules.base
-          self.darwinModules.nixConfig
           # Apply any other imported modules here
           ./mbp-m3-pro/configuration.nix
           # inputs.nixvim.nixDarwinModules.nixvim
@@ -63,10 +80,8 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.david = ./home.nix;
+              sharedModules = [ inputs.nixvim.homeModules.nixvim ];
             };
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
           }
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
@@ -87,69 +102,36 @@
 
       homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = inputs.nixpkgs.legacyPackages.${system};
-        modules = [ ./home.nix ];
+        modules = [
+          inputs.nixvim.homeModules.nixvim
+          ./home.nix
+        ];
         extraSpecialArgs = { inherit self; };
       };
 
       # nix-darwin module outputs
       darwinModules = {
         # Some base configuration
-        base =
-          {
-            # config,
-            # pkgs,
-            # lib,
-            ...
-          }:
-          {
-            # Required for nix-darwin to work
-            system.stateVersion = 1;
+        base = _: {
+          # Required for nix-darwin to work
+          system.stateVersion = 1;
 
-            users.users.${username} = {
-              name = username;
-              uid = 501; # from `id -u`
-              # See the reference docs for more on user config:
-              # https://nix-darwin.github.io/nix-darwin/manual/#opt-users.users
-            };
-
-            # Other configuration parameters
-            # See here: https://nix-darwin.github.io/nix-darwin/manual
+          users.users.${username} = {
+            name = username;
+            home = "/Users/${username}";
+            uid = 501; # from `id -u`
           };
 
-        # Nix configuration
-        nixConfig =
-          {
-            # config,
-            # pkgs,
-            # lib,
-            ...
-          }:
-          {
-            # Let Determinate Nix handle your Nix configuration
-            nix.enable = false;
-
-            # Custom Determinate Nix settings written to /etc/nix/nix.custom.conf
-            determinate-nix.customSettings = {
-              # Enables parallel evaluation (remove this setting or set the value to 1 to disable)
-              eval-cores = 0;
-              extra-experimental-features = [
-                "build-time-fetch-tree" # Enables build-time flake inputs
-                "parallel-eval" # Enables parallel evaluation
-              ];
-              # Other settings
-            };
-          };
+          # Determinate Nix is installed, let it manage nix
+          nix.enable = false;
+        };
 
         # Add other module outputs here
       };
 
       # Development environment
-      devShells.${system}.default =
-        let
-          pkgs = inputs.nixpkgs.legacyPackages.${system};
-        in
-        pkgs.mkShellNoCC {
-          packages = with pkgs; [
+      devShells.${system}.default = pkgs.mkShell {
+        packages = with pkgs; [
           # Shell script for applying the nix-darwin configuration.
           # Run this to apply the configuration in this flake to your macOS system.
           (writeShellApplication {
@@ -169,19 +151,26 @@
             '';
           })
 
-            self.formatter.${system}
-          ];
-        };
+          # Formatting and linting
+          treefmtEval.config.build.wrapper
+          statix
+          nil
+        ];
+        shellHook = ''
+          ${pre-commit-check.shellHook}
+          echo "nix-darwin development environment"
+          echo "Available tools: treefmt, statix, nil"
+          echo "Pre-commit hooks installed: treefmt, statix"
+        '';
+      };
 
-      # Nix formatter
+      # Nix formatter (using treefmt wrapper)
+      formatter.${system} = treefmtEval.config.build.wrapper;
 
-      # This applies the formatter that follows RFC 166, which defines a standard format:
-      # https://github.com/NixOS/rfcs/pull/166
-
-      # To format all Nix files:
-      # git ls-files -z '*.nix' | xargs -0 -r nix fmt
-      # To check formatting:
-      # git ls-files -z '*.nix' | xargs -0 -r nix develop --command nixfmt --check
-      formatter.${system} = inputs.nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+      # Checks for CI
+      checks.${system} = {
+        formatting = treefmtEval.config.build.check self;
+        pre-commit = pre-commit-check;
+      };
     };
 }
