@@ -71,7 +71,7 @@
       "pnpm"
       "prettier"
       #"ripgrep" # use nix
-      "sketchybar"
+      #"sketchybar" # use nix
       #"koekeishiya/formulae/skhd" # use nix
       #"starship" # use nix
       #"tig" # using forgit

@@ -79,7 +79,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.david = ./home.nix;
+              users.david = ./home;
               sharedModules = [ inputs.nixvim.homeModules.nixvim ];
             };
           }
@@ -104,7 +104,7 @@
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         modules = [
           inputs.nixvim.homeModules.nixvim
-          ./home.nix
+          ./home
         ];
         extraSpecialArgs = { inherit self; };
       };
