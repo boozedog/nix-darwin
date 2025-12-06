@@ -13,7 +13,7 @@ source ~/.config/fish/config.fish
 ## update system (including home-manager config)
 
 ```sh
-sudo --preserve-env=NIX_CONFIG darwin-rebuild switch --flake ~/projects/nix-darwin
+sudo darwin-rebuild switch --flake ~/projects/nix-darwin
 ```
 
 ## initial

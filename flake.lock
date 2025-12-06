@@ -131,11 +131,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1765053344,
-        "narHash": "sha256-y/o6DOYrCSYlyxZ955hK7ZmosiReVsaf8qwV6DEn9Do=",
+        "lastModified": 1765053752,
+        "narHash": "sha256-dVL4wLF4rcNqGou+Y73ZAm/y3RFJ5tP/CdbbaxAW5JQ=",
         "owner": "boozedog",
         "repo": "home-manager",
-        "rev": "27d28bec352d5cf9ef323e56358abaca41092c98",
+        "rev": "bcdfb169de9337fcc8f23f5b9ba4f731326b05b2",
         "type": "github"
       },
       "original": {
