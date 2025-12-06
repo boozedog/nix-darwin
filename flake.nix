@@ -18,6 +18,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager-config = {
+      url = "github:boozedog/home-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        nixvim.follows = "nixvim";
+      };
+    };
     #komorebi-for-mac.url = "github:KomoCorp/komorebi-for-mac";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -49,6 +57,16 @@
       # Treefmt configuration
       treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
 
+      # Home-manager modules (cross-platform, from external repo)
+      homeModules = inputs.home-manager-config.homeModuleList;
+
+      # Darwin-specific home modules
+      homeModulesDarwin = homeModules ++ [
+        ./home/darwin.nix
+        ./home/ghostty.nix
+        ./home/sketchybar.nix
+      ];
+
       # Pre-commit hooks
       pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
         src = ./.;
@@ -79,8 +97,9 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.david = ./home;
+              users.${username}.imports = homeModulesDarwin;
               sharedModules = [ inputs.nixvim.homeModules.nixvim ];
+              extraSpecialArgs = { inherit username; };
             };
           }
           # In addition to adding modules in the style above, you can also
@@ -102,11 +121,8 @@
 
       homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = inputs.nixpkgs.legacyPackages.${system};
-        modules = [
-          inputs.nixvim.homeModules.nixvim
-          ./home
-        ];
-        extraSpecialArgs = { inherit self; };
+        modules = [ inputs.nixvim.homeModules.nixvim ] ++ homeModules;
+        extraSpecialArgs = { inherit self username; };
       };
 
       # nix-darwin module outputs
