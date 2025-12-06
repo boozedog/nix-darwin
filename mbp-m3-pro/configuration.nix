@@ -74,6 +74,7 @@
       #"ripgrep" # use nix
       #"sketchybar" # use nix
       #"koekeishiya/formulae/skhd" # use nix
+      "supabase"
       #"starship" # use nix
       #"tig" # using forgit
       "tombi"
@@ -116,7 +117,7 @@
   };
 
   programs = {
-    direnv.enable = true;
+    # direnv managed by home-manager with nix-direnv
     fish.enable = true;
     nix-index.enable = true;
     # nixvim = {
