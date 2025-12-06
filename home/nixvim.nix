@@ -106,6 +106,7 @@ _: {
 
     # All plugins configuration
     plugins = {
+      which-key.enable = true;
       # Treesitter for better syntax highlighting
       treesitter = {
         enable = true;
