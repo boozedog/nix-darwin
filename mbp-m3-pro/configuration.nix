@@ -25,6 +25,7 @@
       statix
       terminal-notifier
       tree # claude is always trying to use this
+      trippy
       zinit
       #zsh-forgit
     ];
@@ -101,6 +102,7 @@
       "obsidian"
       "orbstack"
       "postgres-unofficial"
+      "raycast"
       "steam"
       "tailscale-app"
       #"ungoogled-chromium" # using brave
@@ -161,75 +163,41 @@
           FXEnableSlowAnimation = false;
         };
         "com.apple.symbolichotkeys" = {
-          AppleSymbolicHotKeys = {
-            # Switch to Desktop 1-6 (Ctrl+1 through Ctrl+6)
-            "118" = {
-              enabled = true;
-              value = {
-                parameters = [
-                  65535
-                  18
-                  262144
-                ];
-                type = "standard";
+          AppleSymbolicHotKeys =
+            let
+              # Key codes for 1-7 keys
+              keyCodes = [
+                18
+                19
+                20
+                21
+                23
+                22
+                26
+              ];
+              mkDesktopShortcut = n: {
+                enabled = true;
+                value = {
+                  parameters = [
+                    65535
+                    (builtins.elemAt keyCodes (n - 1))
+                    262144
+                  ];
+                  type = "standard";
+                };
               };
+            in
+            {
+              # Switch to Desktop 1-7 (Ctrl+1 through Ctrl+7)
+              # Hotkey IDs 118-124 correspond to Desktops 1-7
+              "118" = mkDesktopShortcut 1;
+              "119" = mkDesktopShortcut 2;
+              "120" = mkDesktopShortcut 3;
+              "121" = mkDesktopShortcut 4;
+              "122" = mkDesktopShortcut 5;
+              "123" = mkDesktopShortcut 6;
+              "124" = mkDesktopShortcut 7;
             };
-            "119" = {
-              enabled = true;
-              value = {
-                parameters = [
-                  65535
-                  19
-                  262144
-                ];
-                type = "standard";
-              };
-            };
-            "120" = {
-              enabled = true;
-              value = {
-                parameters = [
-                  65535
-                  20
-                  262144
-                ];
-                type = "standard";
-              };
-            };
-            "121" = {
-              enabled = true;
-              value = {
-                parameters = [
-                  65535
-                  21
-                  262144
-                ];
-                type = "standard";
-              };
-            };
-            "122" = {
-              enabled = true;
-              value = {
-                parameters = [
-                  65535
-                  23
-                  262144
-                ];
-                type = "standard";
-              };
-            };
-            "123" = {
-              enabled = true;
-              value = {
-                parameters = [
-                  65535
-                  22
-                  262144
-                ];
-                type = "standard";
-              };
-            };
-          };
         };
       };
       dock = {
@@ -239,7 +207,7 @@
         magnification = true;
         wvous-br-corner = 1;
       };
-      universalaccess.reduceMotion = true;
+      # universalaccess.reduceMotion = true; # Requires manual setting - protected by macOS
       NSGlobalDomain = {
         "com.apple.keyboard.fnState" = true;
         AppleShowAllExtensions = true;
