@@ -34,9 +34,9 @@ let
       SPEED=$(system_profiler SPAirPortDataType 2>/dev/null | grep -A15 "Current Network" | grep "Transmit Rate" | head -1 | awk '{print $3}')
       if [ -n "$SPEED" ] && [ "$SPEED" -gt 0 ] 2>/dev/null; then
         if [ "$SPEED" -ge 1000 ]; then
-          sketchybar --set "$NAME" icon="󰖩" label="$((SPEED/1000))Gbps $PING_LABEL"
+          sketchybar --set "$NAME" icon="󰖩" label="$((SPEED/1000))G $PING_LABEL"
         else
-          sketchybar --set "$NAME" icon="󰖩" label="''${SPEED}Mbps $PING_LABEL"
+          sketchybar --set "$NAME" icon="󰖩" label="''${SPEED}M $PING_LABEL"
         fi
       else
         sketchybar --set "$NAME" icon="󰖩" label="-- $PING_LABEL"
@@ -47,9 +47,9 @@ let
       SPEED=$(echo "$MEDIA" | sed 's/.*(\([0-9]*\)base.*/\1/' | grep -oE '^[0-9]+')
       if [ -n "$SPEED" ]; then
         if [ "$SPEED" -ge 1000 ]; then
-          sketchybar --set "$NAME" icon="󰈀" label="$((SPEED/1000))Gbps $PING_LABEL"
+          sketchybar --set "$NAME" icon="󰈀" label="$((SPEED/1000))G $PING_LABEL"
         else
-          sketchybar --set "$NAME" icon="󰈀" label="''${SPEED}Mbps $PING_LABEL"
+          sketchybar --set "$NAME" icon="󰈀" label="''${SPEED}M $PING_LABEL"
         fi
       else
         sketchybar --set "$NAME" icon="󰈀" label="-- $PING_LABEL"
@@ -88,12 +88,28 @@ let
   batteryScript = pkgs.writeShellScript "sketchybar-battery" ''
     BATT_INFO=$(pmset -g batt)
     PERCENT=$(echo "$BATT_INFO" | grep -Eo "[0-9]+%" | head -1)
-    TIME_REMAINING=$(echo "$BATT_INFO" | grep -Eo "[0-9]+:[0-9]+" | head -1)
+    TIME_RAW=$(echo "$BATT_INFO" | grep -Eo "[0-9]+:[0-9]+" | head -1)
+
+    # Format time as Xh Ym or just Ym if less than an hour
+    if [ -n "$TIME_RAW" ]; then
+      HOURS=$(echo "$TIME_RAW" | cut -d: -f1)
+      MINS=$(echo "$TIME_RAW" | cut -d: -f2)
+      # Remove leading zeros
+      HOURS=$((10#$HOURS))
+      MINS=$((10#$MINS))
+      if [ "$HOURS" -gt 0 ]; then
+        TIME_REMAINING="''${HOURS}h''${MINS}m"
+      else
+        TIME_REMAINING="''${MINS}m"
+      fi
+    else
+      TIME_REMAINING=""
+    fi
 
     if echo "$BATT_INFO" | grep -q "AC Power"; then
       if echo "$BATT_INFO" | grep -q "charged"; then
         ICON="󰚥"
-        COLOR="0xfff9e2af"  # yellow
+        COLOR="0xffa6e3a1"  # green
         LABEL="$PERCENT"
       elif echo "$BATT_INFO" | grep -qi "not charging"; then
         ICON="󰚥"
@@ -192,14 +208,14 @@ in
       sketchybar --add item battery right \
         --set battery \
           padding_left=24 \
-          update_freq=60 \
+          update_freq=10 \
           script="${batteryScript}" \
         --subscribe battery power_source_change system_woke
 
       sketchybar --add item date right \
         --set date \
           padding_left=24 \
-          update_freq=3600 \
+          update_freq=60 \
           script='sketchybar --set $NAME label="$(date "+%a %Y-%m-%d")"'
 
       sketchybar --add event clock
