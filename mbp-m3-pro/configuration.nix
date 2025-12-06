@@ -85,6 +85,7 @@
       #"alacritty" # using ghostty
       "alt-tab"
       "amethyst"
+      "betterdisplay"
       "beyond-compare"
       "brave-browser"
       "claude"
