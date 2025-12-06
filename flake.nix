@@ -62,7 +62,7 @@
 
       # Darwin-specific home modules
       homeModulesDarwin = homeModules ++ [
-        ./home/darwin.nix
+        ./home
         ./home/ghostty.nix
         ./home/sketchybar.nix
       ];

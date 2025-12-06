@@ -1,7 +1,11 @@
 # Darwin-specific home-manager settings
 { pkgs, lib, ... }:
 {
+  # Disable home-manager's nix management (Determinate Nix handles it)
+  nix.enable = false;
+
   home = {
+    stateVersion = "25.11";
     homeDirectory = lib.mkForce "/Users/david";
     sessionPath = [
       "/opt/homebrew/bin"
@@ -9,8 +13,12 @@
     ];
   };
 
-  # Disable home-manager's nix management (Determinate Nix handles it)
-  nix.enable = false;
+  programs.git = {
+    settings = {
+      user.name = "boozedog";
+      user.email = "code@booze.dog";
+    };
+  };
 
   programs.fish = {
     plugins = [
