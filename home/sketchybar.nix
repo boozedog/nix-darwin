@@ -88,24 +88,37 @@ let
   batteryScript = pkgs.writeShellScript "sketchybar-battery" ''
     BATT_INFO=$(pmset -g batt)
     PERCENT=$(echo "$BATT_INFO" | grep -Eo "[0-9]+%" | head -1)
+    TIME_REMAINING=$(echo "$BATT_INFO" | grep -Eo "[0-9]+:[0-9]+" | head -1)
 
     if echo "$BATT_INFO" | grep -q "AC Power"; then
       if echo "$BATT_INFO" | grep -q "charged"; then
-        ICON="⚡"
+        ICON="󰚥"
         COLOR="0xfff9e2af"  # yellow
+        LABEL="$PERCENT"
       elif echo "$BATT_INFO" | grep -qi "not charging"; then
-        ICON="⚡"
+        ICON="󰚥"
         COLOR="0xfff9e2af"  # yellow
+        LABEL="$PERCENT"
       else
         ICON="↑"
         COLOR="0xffa6e3a1"  # green
+        if [ -n "$TIME_REMAINING" ]; then
+          LABEL="$PERCENT $TIME_REMAINING"
+        else
+          LABEL="$PERCENT"
+        fi
       fi
     else
       ICON="↓"
       COLOR="0xfff38ba8"  # red
+      if [ -n "$TIME_REMAINING" ]; then
+        LABEL="$PERCENT $TIME_REMAINING"
+      else
+        LABEL="$PERCENT"
+      fi
     fi
 
-    sketchybar --set "$NAME" label="$PERCENT" icon="$ICON" icon.color="$COLOR"
+    sketchybar --set "$NAME" label="$LABEL" icon="$ICON" icon.color="$COLOR"
   '';
 
 in
