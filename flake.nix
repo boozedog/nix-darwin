@@ -32,6 +32,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     claude-code.url = "github:sadjow/claude-code-nix";
+    nox = {
+      url = "github:madsbv/nix-options-search";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Flake outputs
@@ -94,6 +98,9 @@
           }
           ./ns.nix
           ./modules/claude-code.nix
+          {
+            environment.systemPackages = [ inputs.nox.packages.${system}.default ];
+          }
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
           # (
