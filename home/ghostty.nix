@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
-{
+_: {
   programs.ghostty = {
     enable = true;
     package = null;

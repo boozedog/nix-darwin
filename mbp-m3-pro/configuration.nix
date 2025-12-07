@@ -15,6 +15,7 @@
     systemPackages = with pkgs; [
       awk-language-server
       claude-monitor
+      deadnix
       #direnv
       dockerfile-language-server
       #fishPlugins.forgit
@@ -98,7 +99,7 @@
       "beyond-compare"
       "brave-browser"
       "claude"
-      #"claude-code"
+      #"claude-code" # use nix derivation
       "discord"
       "ghostty"
       "google-chrome"

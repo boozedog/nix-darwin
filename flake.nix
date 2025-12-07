@@ -31,7 +31,6 @@
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    claude-code.url = "github:sadjow/claude-code-nix";
     nox = {
       url = "github:madsbv/nix-options-search";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,7 +52,13 @@
       # Change this to `x86_64-darwin` for Intel macOS
       system = "aarch64-darwin";
 
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      # Local packages
+      claude-code = pkgs.callPackage ./packages/claude-code.nix { };
 
       # Home-manager modules (cross-platform, from external repo)
       homeModules = inputs.home-manager-config.homeModuleList;
@@ -61,6 +66,7 @@
       # Darwin-specific home modules
       homeModulesDarwin = homeModules ++ [
         ./home
+        ./home/claude-code.nix
         ./home/ghostty.nix
         ./home/sketchybar.nix
       ];
@@ -79,8 +85,7 @@
       darwinConfigurations."mbp-m3-pro" = inputs.nix-darwin.lib.darwinSystem {
         modules = [
           { nixpkgs.hostPlatform = system; }
-          # Add the komorebi-for-mac overlay
-          #{ nixpkgs.overlays = [ inputs.komorebi-for-mac.overlays.default ]; }
+          { nixpkgs.config.allowUnfree = true; }
           # Apply the modules output by this flake
           self.darwinModules.base
           # Apply any other imported modules here
@@ -97,9 +102,12 @@
             };
           }
           ./ns.nix
-          ./modules/claude-code.nix
+          #./modules/claude-code.nix
           {
-            environment.systemPackages = [ inputs.nox.packages.${system}.default ];
+            environment.systemPackages = [
+              inputs.nox.packages.${system}.default
+              claude-code
+            ];
           }
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
@@ -120,7 +128,16 @@
 
       homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = inputs.nixpkgs.legacyPackages.${system};
-        modules = [ inputs.nixvim.homeModules.nixvim ] ++ homeModules;
+        modules = [
+          inputs.nixvim.homeModules.nixvim
+          {
+            home = {
+              inherit username;
+              # homeDirectory is set in ./home/default.nix via lib.mkForce
+            };
+          }
+        ]
+        ++ homeModulesDarwin;
         extraSpecialArgs = { inherit self username; };
       };
 
@@ -167,6 +184,7 @@
           })
 
           # Linting
+          deadnix
           statix
           nil
         ];
