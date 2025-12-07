@@ -35,6 +35,10 @@
       url = "github:madsbv/nix-options-search";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Flake outputs
@@ -102,6 +106,8 @@
             };
           }
           ./ns.nix
+          inputs.agenix.darwinModules.default
+          ./secrets
           #./modules/claude-code.nix
           {
             environment.systemPackages = [
@@ -187,6 +193,9 @@
           deadnix
           statix
           nil
+
+          # Secrets management
+          inputs.agenix.packages.${system}.default
         ];
         shellHook = ''
           ${pre-commit-check.shellHook}
