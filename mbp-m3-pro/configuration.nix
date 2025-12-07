@@ -6,9 +6,15 @@
 {
   networking.hostName = "mbp-m3-pro";
 
+  nix.settings = {
+    substituters = [ "https://claude-code.cachix.org" ];
+    trusted-public-keys = [ "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk=" ];
+  };
+
   environment = {
     systemPackages = with pkgs; [
       awk-language-server
+      claude-monitor
       #direnv
       dockerfile-language-server
       #fishPlugins.forgit
@@ -17,6 +23,7 @@
       git-extras
       helix
       #komorebi-full
+      nix-search-tv
       nixd
       nixfmt
       nodePackages.npm-check-updates
@@ -91,7 +98,7 @@
       "beyond-compare"
       "brave-browser"
       "claude"
-      "claude-code"
+      #"claude-code"
       "discord"
       "ghostty"
       "google-chrome"

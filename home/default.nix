@@ -13,31 +13,40 @@
     ];
   };
 
-  programs.git = {
-    settings = {
-      user.name = "boozedog";
-      user.email = "code@booze.dog";
+  programs = {
+    git = {
+      settings = {
+        user.name = "boozedog";
+        user.email = "code@booze.dog";
+      };
     };
-  };
 
-  programs.fish = {
-    plugins = [
-      {
-        name = "macos";
-        inherit (pkgs.fishPlugins.macos) src;
-      }
-    ];
-    loginShellInit = ''
-      # OrbStack integration
-      test -f ~/.orbstack/shell/init2.fish; and source ~/.orbstack/shell/init2.fish
-    '';
-    shellInit = ''
-      if status is-interactive
-        # Bitwarden SSH agent socket (macOS app location)
-        set -x SSH_AUTH_SOCK ~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
-        # GitHub access token for Homebrew (for private tap formulas)
-        set -x HOMEBREW_GITHUB_API_TOKEN (gh auth token)
-      end
-    '';
+    fish = {
+      plugins = [
+        {
+          name = "macos";
+          inherit (pkgs.fishPlugins.macos) src;
+        }
+      ];
+      loginShellInit = ''
+        # OrbStack integration
+        test -f ~/.orbstack/shell/init2.fish; and source ~/.orbstack/shell/init2.fish
+      '';
+      shellInit = ''
+        if status is-interactive
+          # Bitwarden SSH agent socket (macOS app location)
+          set -x SSH_AUTH_SOCK ~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
+          # GitHub access token for Homebrew (for private tap formulas)
+          set -x HOMEBREW_GITHUB_API_TOKEN (gh auth token)
+        end
+      '';
+    };
+    nix-search-tv.enableTelevisionIntegration = true;
+    television = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      enableZshIntegration = true;
+    };
   };
 }

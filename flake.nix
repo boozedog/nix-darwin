@@ -27,14 +27,11 @@
       };
     };
     #komorebi-for-mac.url = "github:KomoCorp/komorebi-for-mac";
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
   # Flake outputs
@@ -54,9 +51,6 @@
 
       pkgs = inputs.nixpkgs.legacyPackages.${system};
 
-      # Treefmt configuration
-      treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
-
       # Home-manager modules (cross-platform, from external repo)
       homeModules = inputs.home-manager-config.homeModuleList;
 
@@ -71,10 +65,6 @@
       pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
         src = ./.;
         hooks = {
-          treefmt = {
-            enable = true;
-            package = treefmtEval.config.build.wrapper;
-          };
           statix.enable = true;
         };
       };
@@ -102,6 +92,8 @@
               extraSpecialArgs = { inherit username; };
             };
           }
+          ./ns.nix
+          ./modules/claude-code.nix
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
           # (
@@ -167,26 +159,17 @@
             '';
           })
 
-          # Formatting and linting
-          treefmtEval.config.build.wrapper
+          # Linting
           statix
           nil
         ];
         shellHook = ''
           ${pre-commit-check.shellHook}
           echo "nix-darwin development environment"
-          echo "Available tools: treefmt, statix, nil"
-          echo "Pre-commit hooks installed: treefmt, statix"
+          echo "Available tools: statix, nil"
+          echo "Pre-commit hooks installed: statix"
         '';
       };
 
-      # Nix formatter (using treefmt wrapper)
-      formatter.${system} = treefmtEval.config.build.wrapper;
-
-      # Checks for CI
-      checks.${system} = {
-        formatting = treefmtEval.config.build.check self;
-        pre-commit = pre-commit-check;
-      };
     };
 }
