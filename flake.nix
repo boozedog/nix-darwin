@@ -72,7 +72,7 @@
         ./home
         ./home/claude-code.nix
         ./home/ghostty.nix
-        ./home/sketchybar.nix
+        ./home/sketchybar
       ];
 
       # Pre-commit hooks

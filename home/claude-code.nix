@@ -29,6 +29,13 @@ let
         command = "uvx";
         args = [ "mcp-nixos" ];
       };
+      github = {
+        type = "http";
+        url = "https://api.githubcopilot.com/mcp/";
+        headers = {
+          Authorization = "Bearer __GITHUB_TOKEN__";
+        };
+      };
     };
   };
 in
@@ -51,11 +58,14 @@ in
     # mcpServers into existing content rather than overwriting.
     activation.claudeMcpServers = ''
       CLAUDE_JSON="$HOME/.claude.json"
+      GITHUB_TOKEN=$(${pkgs.gh}/bin/gh auth token 2>/dev/null || echo "")
+      MCP_CONFIG='${mcpConfig}'
+      MCP_CONFIG=$(echo "$MCP_CONFIG" | ${pkgs.gnused}/bin/sed "s/__GITHUB_TOKEN__/$GITHUB_TOKEN/")
       if [ -f "$CLAUDE_JSON" ]; then
         # Merge mcpServers into existing file, preserving other keys
-        ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$CLAUDE_JSON" <(echo '${mcpConfig}') > "$CLAUDE_JSON.tmp" && mv "$CLAUDE_JSON.tmp" "$CLAUDE_JSON"
+        ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$CLAUDE_JSON" <(echo "$MCP_CONFIG") > "$CLAUDE_JSON.tmp" && mv "$CLAUDE_JSON.tmp" "$CLAUDE_JSON"
       else
-        echo '${mcpConfig}' > "$CLAUDE_JSON"
+        echo "$MCP_CONFIG" > "$CLAUDE_JSON"
       fi
     '';
   };

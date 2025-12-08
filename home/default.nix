@@ -14,6 +14,10 @@
   };
 
   programs = {
+    aerospace = {
+      enable = true;
+      launchd.enable = true;
+    };
     git = {
       settings = {
         user.name = "boozedog";

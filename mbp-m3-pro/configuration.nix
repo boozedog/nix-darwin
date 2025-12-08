@@ -94,7 +94,7 @@
     casks = [
       #"alacritty" # using ghostty
       "alt-tab"
-      "amethyst"
+      #"amethyst"
       "betterdisplay"
       "beyond-compare"
       "brave-browser"
