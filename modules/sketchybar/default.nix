@@ -48,6 +48,10 @@ let
     )
   );
 
+  windowTitleScript = pkgs.writeShellScript "sketchybar-window-title" (
+    builtins.readFile ./scripts/window-title.sh
+  );
+
 in
 {
   fonts.packages = [ pkgs.sketchybar-app-font ];
@@ -72,7 +76,7 @@ in
 
       for sid in $(aerospace list-workspaces --all); do
           sketchybar --add item space.$sid left \
-              --subscribe space.$sid aerospace_workspace_change \
+              --subscribe space.$sid aerospace_workspace_change front_app_switched \
               --set space.$sid \
               background.color=0x40ffffff \
               background.corner_radius=5 \
@@ -80,10 +84,9 @@ in
               background.drawing=off \
               icon="$sid" \
               icon.padding_left=7 \
-              icon.padding_right=4 \
+              icon.padding_right=7 \
               icon.y_offset=1 \
               label.font="${appFont}:Regular:14.0" \
-              label.y_offset=-1 \
               label.padding_right=7 \
               label.drawing=off \
               click_script="aerospace workspace $sid" \
@@ -94,13 +97,15 @@ in
       sketchybar --add item frontapp left \
         --set frontapp \
           padding_left=10 \
+          label.padding_right=7 \
           script='sketchybar --set $NAME label="$INFO"' \
         --subscribe frontapp front_app_switched
 
       sketchybar --add item window_title left \
         --set window_title \
-          script='sketchybar --set $NAME label="$WINDOW_TITLE"' \
-        --subscribe window_title front_app_switched title_change
+          label.color=${colors.subtle} \
+          script="${windowTitleScript}" \
+        --subscribe window_title front_app_switched window_focus title_change
 
       # Right side items with spacing
       sketchybar --add item battery right \

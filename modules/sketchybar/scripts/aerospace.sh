@@ -20,7 +20,12 @@ build_icon_string() {
 
   while IFS= read -r app; do
     [ -z "$app" ] && continue
-    __icon_map "$app"
+    # Map Fastmail to use Mail icon
+    if [ "$app" = "Fastmail" ]; then
+      __icon_map "Mail"
+    else
+      __icon_map "$app"
+    fi
     if [ -z "$icons" ]; then
       icons="$icon_result"
     else
@@ -39,27 +44,29 @@ APP_ICONS=$(build_icon_string "$SID")
 
 # Update the workspace item
 if [ "$SID" = "$FOCUSED" ]; then
-  # Focused workspace: highlight background, show icons if any
+  # Focused workspace: always show with highlight background
   if [ -n "$APP_ICONS" ]; then
     sketchybar --set "$NAME" \
+      drawing=on \
       background.drawing=on \
       label="$APP_ICONS" \
       label.drawing=on
   else
     sketchybar --set "$NAME" \
+      drawing=on \
       background.drawing=on \
       label.drawing=off
   fi
 else
-  # Unfocused workspace: no background highlight, still show icons if any
+  # Unfocused workspace: only show if it has apps
   if [ -n "$APP_ICONS" ]; then
     sketchybar --set "$NAME" \
+      drawing=on \
       background.drawing=off \
       label="$APP_ICONS" \
       label.drawing=on
   else
     sketchybar --set "$NAME" \
-      background.drawing=off \
-      label.drawing=off
+      drawing=off
   fi
 fi
