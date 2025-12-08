@@ -23,6 +23,9 @@ build_icon_string() {
     # Map Fastmail to use Mail icon
     if [ "$app" = "Fastmail" ]; then
       __icon_map "Mail"
+    # Grok uses bilibili icon (robot-like)
+    elif [ "$app" = "Grok" ]; then
+      icon_result=":bilibili:"
     else
       __icon_map "$app"
     fi

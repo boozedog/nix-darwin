@@ -53,8 +53,12 @@ in
           else
             "move-node-to-workspace ${ws}"
         );
+        layoutBindings = {
+          "alt-slash" = "layout tiles horizontal vertical"; # Default tiling
+          "alt-comma" = "layout accordion horizontal"; # Horizontal accordion
+        };
       in
-      focusWorkspaces // moveToWorkspace;
+      focusWorkspaces // moveToWorkspace // layoutBindings;
 
     workspace-to-monitor-force-assignment =
       let
