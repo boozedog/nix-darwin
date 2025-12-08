@@ -23,6 +23,11 @@
       enable = true;
       enableFishIntegration = true;
       daemon.enable = true;
+      settings = {
+        filter_mode = "workspace";
+        style = "auto";
+        workspaces = "true";
+      };
     };
     git = {
       settings = {
