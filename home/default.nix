@@ -48,6 +48,31 @@
           set -x HOMEBREW_GITHUB_API_TOKEN (gh auth token)
         end
       '';
+      interactiveShellInit = ''
+        # Zellij auto tab naming: show running command during execution
+        function zellij_tab_preexec --on-event fish_preexec
+          if set -q ZELLIJ
+            set -l cmd (string split ' ' $argv)[1]
+            command nohup zellij action rename-tab $cmd >/dev/null 2>&1 &
+          end
+        end
+
+        # Zellij auto tab naming: show directory when idle
+        function zellij_tab_postexec --on-event fish_postexec
+          if set -q ZELLIJ
+            set -l tab_name (basename $PWD)
+            test "$PWD" = "$HOME"; and set tab_name "~"
+            command nohup zellij action rename-tab $tab_name >/dev/null 2>&1 &
+          end
+        end
+
+        # Set initial tab name on shell start
+        if set -q ZELLIJ
+          set -l tab_name (basename $PWD)
+          test "$PWD" = "$HOME"; and set tab_name "~"
+          command nohup zellij action rename-tab $tab_name >/dev/null 2>&1 &
+        end
+      '';
     };
     nix-search-tv.enableTelevisionIntegration = true;
     television = {
@@ -55,6 +80,22 @@
       enableBashIntegration = true;
       enableFishIntegration = true;
       enableZshIntegration = true;
+    };
+    zellij = {
+      enable = true;
+      enableFishIntegration = true;
+      attachExistingSession = true;
+      exitShellOnExit = true;
+      settings = {
+        on_force_close = "detach";
+      };
+      extraConfig = ''
+        keybinds {
+          normal {
+            unbind "Ctrl q"
+          }
+        }
+      '';
     };
   };
 }
