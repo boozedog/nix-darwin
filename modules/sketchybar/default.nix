@@ -4,7 +4,6 @@ let
   colors = import ./colors.nix;
   font = "Maple Mono NL NF";
 
-  # Load and wrap scripts
   networkSpeedScript = pkgs.writeShellScript "sketchybar-network-speed" (
     builtins.readFile ./scripts/network-speed.sh
   );
@@ -41,10 +40,13 @@ let
       (builtins.readFile ./scripts/battery.sh)
   );
 
+  aerospaceScript = pkgs.writeShellScript "sketchybar-aerospace" (
+    builtins.readFile ./scripts/aerospace.sh
+  );
+
 in
 {
-  programs.sketchybar = {
-    enable = true;
+  services.sketchybar = {
     extraPackages = with pkgs; [ jq ];
 
     config = ''
@@ -56,45 +58,25 @@ in
         icon.color=${colors.fg} \
         label.color=${colors.fg}
 
-      # === SPACES (sketchybar only shows spaces that exist) ===
-      ${builtins.concatStringsSep "\n" (
-        builtins.genList (
-          i:
-          let
-            n = i + 1;
-            romanNumerals = [
-              "I"
-              "II"
-              "III"
-              "IV"
-              "V"
-              "VI"
-              "VII"
-            ];
-            roman = builtins.elemAt romanNumerals i;
-          in
-          ''
-            sketchybar --add space space.${toString n} left \
-              --set space.${toString n} \
-                associated_space=${toString n} \
-                icon="${roman}" \
-                icon.padding_left=8 \
-                icon.padding_right=8 \
-                icon.y_offset=1 \
-                padding_left=2 \
-                padding_right=2 \
-                label.padding_right=8 \
-                label.drawing=off \
-                label.y_offset=1 \
-                background.color=${colors.fg} \
-                background.corner_radius=4 \
-                background.height=20 \
-                background.drawing=off \
-                script='[ "$SELECTED" = "true" ] && sketchybar --set $NAME background.drawing=on icon.color=0xff000000 label.color=0xff000000 || sketchybar --set $NAME background.drawing=off icon.color=${colors.fg} label.color=${colors.fg}' \
-              --subscribe space.${toString n} space_change
-          ''
-        ) 7
-      )}
+      # === AEROSPACE WORKSPACES ===
+      sketchybar --add event aerospace_workspace_change
+
+      for sid in $(aerospace list-workspaces --all); do
+          sketchybar --add item space.$sid left \
+              --subscribe space.$sid aerospace_workspace_change \
+              --set space.$sid \
+              background.color=0x40ffffff \
+              background.corner_radius=5 \
+              background.height=25 \
+              background.drawing=off \
+              icon="$sid" \
+              icon.padding_left=7 \
+              icon.padding_right=4 \
+              label.padding_right=7 \
+              label.drawing=off \
+              click_script="aerospace workspace $sid" \
+              script="${aerospaceScript} $sid"
+      done
 
       # Front app + window title
       sketchybar --add item frontapp left \

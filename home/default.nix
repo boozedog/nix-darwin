@@ -13,11 +13,15 @@
     ];
   };
 
+  # home.file.".aerospace.toml".text =
+  #   builtins.replaceStrings [ "@sketchybar@" ] [ "${pkgs.sketchybar}/bin/sketchybar" ]
+  #     (builtins.readFile ./aerospace.toml);
+
   programs = {
-    aerospace = {
-      enable = true;
-      launchd.enable = true;
-    };
+    # aerospace = {
+    #   enable = true;
+    #   launchd.enable = true;
+    # };
     git = {
       settings = {
         user.name = "boozedog";

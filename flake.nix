@@ -72,7 +72,7 @@
         ./home
         ./home/claude-code.nix
         ./home/ghostty.nix
-        ./home/sketchybar
+        #./home/sketchybar
       ];
 
       # Pre-commit hooks
@@ -115,6 +115,8 @@
               claude-code
             ];
           }
+          ./modules/aerospace.nix
+          ./modules/sketchybar
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
           # (

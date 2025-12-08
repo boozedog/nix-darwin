@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "mcp__github__get_file_contents",
+      "mcp__nixos__*",
+      "Bash(nixfmt:*)",
+      "Bash(statix check:*)",
+      "Bash(deadnix:*)",
+      "Bash(nix flake check:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

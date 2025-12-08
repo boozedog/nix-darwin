@@ -1,6 +1,7 @@
 {
   pkgs,
   self,
+  lib,
   ...
 }:
 {
@@ -29,7 +30,7 @@
       nixfmt
       nodePackages.npm-check-updates
       nodePackages.vscode-json-languageserver
-      #orbstack # use brew
+      #orbstack # use brew'
       statix
       terminal-notifier
       tree # claude is always trying to use this
@@ -114,6 +115,7 @@
       "raycast"
       "steam"
       "tailscale-app"
+      #"ubersicht" # using sketchybar and not simple-bar
       #"ungoogled-chromium" # using brave
       "visual-studio-code"
       #"vscodium"
@@ -127,6 +129,7 @@
   programs = {
     # direnv managed by home-manager with nix-direnv
     fish.enable = true;
+    man.enable = lib.mkForce false;
     nix-index.enable = true;
     # nixvim = {
     #   enable = true;
@@ -146,12 +149,18 @@
 
   services = {
     #tailscale.enable = true; # use brew
+    aerospace = {
+      enable = true;
+    };
     openssh = {
       enable = true;
       extraConfig = ''
         PasswordAuthentication no
         PermitRootLogin no
       '';
+    };
+    sketchybar = {
+      enable = true;
     };
   };
 
