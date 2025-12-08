@@ -3,6 +3,8 @@
 let
   colors = import ./colors.nix;
   font = "Maple Mono NL NF";
+  appFont = "sketchybar-app-font";
+  iconMapScript = "${pkgs.sketchybar-app-font}/bin/icon_map.sh";
 
   networkSpeedScript = pkgs.writeShellScript "sketchybar-network-speed" (
     builtins.readFile ./scripts/network-speed.sh
@@ -41,13 +43,20 @@ let
   );
 
   aerospaceScript = pkgs.writeShellScript "sketchybar-aerospace" (
-    builtins.readFile ./scripts/aerospace.sh
+    builtins.replaceStrings [ "@iconMapScript@" ] [ iconMapScript ] (
+      builtins.readFile ./scripts/aerospace.sh
+    )
   );
 
 in
 {
+  fonts.packages = [ pkgs.sketchybar-app-font ];
+
   services.sketchybar = {
-    extraPackages = with pkgs; [ jq ];
+    extraPackages = with pkgs; [
+      jq
+      sketchybar-app-font
+    ];
 
     config = ''
       sketchybar --bar height=28 color=${colors.bg} y_offset=2 position=top sticky=on padding_left=12 padding_right=12
@@ -72,6 +81,9 @@ in
               icon="$sid" \
               icon.padding_left=7 \
               icon.padding_right=4 \
+              icon.y_offset=1 \
+              label.font="${appFont}:Regular:14.0" \
+              label.y_offset=-1 \
               label.padding_right=7 \
               label.drawing=off \
               click_script="aerospace workspace $sid" \

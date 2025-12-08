@@ -1,33 +1,10 @@
 #!/bin/bash
 
+# Source the icon map from sketchybar-app-font
+source "@iconMapScript@"
+
 # Workspace ID passed as argument
 SID="$1"
-
-# Map app names to Nerd Font icons
-get_app_icon() {
-  case "$1" in
-    "Brave Browser"|"Safari"|"Firefox"|"Google Chrome"|"Arc") echo "" ;;
-    "Code"|"Visual Studio Code") echo "󰨞" ;;
-    "Terminal"|"Alacritty"|"kitty"|"iTerm2"|"Ghostty") echo "" ;;
-    "Finder") echo "" ;;
-    "Messages"|"Slack"|"Discord"|"Telegram") echo "󰍡" ;;
-    "Mail"|"Fastmail") echo "󰇮" ;;
-    "Calendar"|"Fantastical") echo "" ;;
-    "Notes"|"Obsidian"|"Notion") echo "󱞁" ;;
-    "Music"|"Spotify") echo "󰎆" ;;
-    "Preview"|"PDF Expert") echo "" ;;
-    "System Preferences"|"System Settings") echo "" ;;
-    "Activity Monitor") echo "" ;;
-    "Xcode") echo "" ;;
-    "Docker"|"Docker Desktop") echo "" ;;
-    "TablePlus"|"Sequel Pro") echo "" ;;
-    "Postman"|"Insomnia") echo "󰢩" ;;
-    "Figma"|"Sketch") echo "" ;;
-    "zoom.us"|"Zoom") echo "󰍫" ;;
-    "1Password") echo "󰌋" ;;
-    *) echo "󰣆" ;; # Default app icon
-  esac
-}
 
 # Get unique app names for this workspace
 get_workspace_apps() {
@@ -36,19 +13,18 @@ get_workspace_apps() {
     sort -u
 }
 
-# Build icon string for workspace
+# Build icon string for workspace using sketchybar-app-font ligatures
 build_icon_string() {
   local workspace="$1"
   local icons=""
 
   while IFS= read -r app; do
     [ -z "$app" ] && continue
-    local icon
-    icon=$(get_app_icon "$app")
+    __icon_map "$app"
     if [ -z "$icons" ]; then
-      icons="$icon"
+      icons="$icon_result"
     else
-      icons="$icons $icon"
+      icons="$icons $icon_result"
     fi
   done < <(get_workspace_apps "$workspace")
 

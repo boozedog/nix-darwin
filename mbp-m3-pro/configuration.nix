@@ -90,7 +90,7 @@
       "topgrade"
       "typescript-language-server"
       "yaml-language-server"
-      #"zellij" # using tmux
+      #"zellij"
     ];
     casks = [
       #"alacritty" # using ghostty
