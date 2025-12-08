@@ -16,9 +16,12 @@ let
 in
 {
   services.aerospace.settings = {
-    gaps.outer = mkIf sketchybar.enable {
-      top = 0; # sketchybar height
-    };
+    # Per-monitor gaps: notched displays (built-in) need 0, external monitors need space for sketchybar
+    # Format: [{ monitor."pattern" = N }, default]
+    gaps.outer.top = mkIf sketchybar.enable [
+      { monitor."built-in" = 0; }
+      30 # Default for external monitors (sketchybar height=28 + y_offset=2)
+    ];
     # Restart sketchybar after aerospace starts so workspace items are created
     # (sketchybar's config runs `aerospace list-workspaces` which needs aerospace running)
     after-startup-command = mkIf sketchybar.enable [
