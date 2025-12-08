@@ -30,6 +30,9 @@
     };
 
     fish = {
+      shellAbbrs = {
+        za = "zellij attach";
+      };
       plugins = [
         {
           name = "macos";
@@ -83,9 +86,6 @@
     };
     zellij = {
       enable = true;
-      enableFishIntegration = true;
-      attachExistingSession = true;
-      exitShellOnExit = true;
       settings = {
         on_force_close = "detach";
       };

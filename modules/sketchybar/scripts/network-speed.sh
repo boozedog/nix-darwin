@@ -22,7 +22,7 @@ if [[ "$INTERFACE" == "$WIFI_INTERFACE" ]]; then
   SPEED=$(system_profiler SPAirPortDataType 2>/dev/null | grep -A15 "Current Network" | grep "Transmit Rate" | head -1 | awk '{print $3}')
   if [ -n "$SPEED" ] && [ "$SPEED" -gt 0 ] 2>/dev/null; then
     if [ "$SPEED" -ge 1000 ]; then
-      sketchybar --set "$NAME" icon="󰖩" label="$((SPEED/1000))G $PING_LABEL"
+      sketchybar --set "$NAME" icon="󰖩" label="$(echo "$SPEED" | awk '{printf "%.1f", $1/1000}')G $PING_LABEL"
     else
       sketchybar --set "$NAME" icon="󰖩" label="${SPEED}M $PING_LABEL"
     fi
@@ -32,10 +32,10 @@ if [[ "$INTERFACE" == "$WIFI_INTERFACE" ]]; then
 else
   # Ethernet link speed
   MEDIA=$(ifconfig "$INTERFACE" 2>/dev/null | grep media)
-  SPEED=$(echo "$MEDIA" | sed 's/.*(\([0-9]*\)base.*/\1/' | grep -oE '^[0-9]+')
+  SPEED=$(echo "$MEDIA" | sed 's/.*(\([0-9]*\)[Bb]ase.*/\1/' | grep -oE '^[0-9]+')
   if [ -n "$SPEED" ]; then
     if [ "$SPEED" -ge 1000 ]; then
-      sketchybar --set "$NAME" icon="󰈀" label="$((SPEED/1000))G $PING_LABEL"
+      sketchybar --set "$NAME" icon="󰈀" label="$(echo "$SPEED" | awk '{printf "%.1f", $1/1000}')G $PING_LABEL"
     else
       sketchybar --set "$NAME" icon="󰈀" label="${SPEED}M $PING_LABEL"
     fi
