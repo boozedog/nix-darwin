@@ -19,6 +19,7 @@
       deadnix
       #direnv
       dockerfile-language-server
+      fd
       #fishPlugins.forgit
       gh
       git

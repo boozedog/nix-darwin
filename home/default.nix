@@ -18,10 +18,12 @@
   #     (builtins.readFile ./aerospace.toml);
 
   programs = {
-    # aerospace = {
-    #   enable = true;
-    #   launchd.enable = true;
-    # };
+    # note: aerospace is handled by nix-darwin
+    atuin = {
+      enable = true;
+      enableFishIntegration = true;
+      daemon.enable = true;
+    };
     git = {
       settings = {
         user.name = "boozedog";
@@ -30,27 +32,6 @@
     };
 
     fish = {
-      shellAbbrs = {
-        za = "zellij attach";
-      };
-      plugins = [
-        {
-          name = "macos";
-          inherit (pkgs.fishPlugins.macos) src;
-        }
-      ];
-      loginShellInit = ''
-        # OrbStack integration
-        test -f ~/.orbstack/shell/init2.fish; and source ~/.orbstack/shell/init2.fish
-      '';
-      shellInit = ''
-        if status is-interactive
-          # Bitwarden SSH agent socket (macOS app location)
-          set -x SSH_AUTH_SOCK ~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
-          # GitHub access token for Homebrew (for private tap formulas)
-          set -x HOMEBREW_GITHUB_API_TOKEN (gh auth token)
-        end
-      '';
       interactiveShellInit = ''
         # Zellij auto tab naming: show running command during execution
         function zellij_tab_preexec --on-event fish_preexec
@@ -74,6 +55,27 @@
           set -l tab_name (basename $PWD)
           test "$PWD" = "$HOME"; and set tab_name "~"
           command nohup zellij action rename-tab $tab_name >/dev/null 2>&1 &
+        end
+      '';
+      loginShellInit = ''
+        # OrbStack integration
+        test -f ~/.orbstack/shell/init2.fish; and source ~/.orbstack/shell/init2.fish
+      '';
+      plugins = [
+        {
+          name = "macos";
+          inherit (pkgs.fishPlugins.macos) src;
+        }
+      ];
+      shellAbbrs = {
+        za = "zellij attach";
+      };
+      shellInit = ''
+        if status is-interactive
+          # Bitwarden SSH agent socket (macOS app location)
+          set -x SSH_AUTH_SOCK ~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
+          # GitHub access token for Homebrew (for private tap formulas)
+          set -x HOMEBREW_GITHUB_API_TOKEN (gh auth token)
         end
       '';
     };
