@@ -82,12 +82,13 @@ in
               background.corner_radius=5 \
               background.height=25 \
               background.drawing=off \
+              background.padding_left=3 \
+              background.padding_right=3 \
               icon="$sid" \
+              icon.y_offset=1 \
               icon.padding_left=7 \
               icon.padding_right=7 \
-              icon.y_offset=1 \
               label.font="${appFont}:Regular:14.0" \
-              label.padding_right=7 \
               label.drawing=off \
               click_script="aerospace workspace $sid" \
               script="${aerospaceScript} $sid"

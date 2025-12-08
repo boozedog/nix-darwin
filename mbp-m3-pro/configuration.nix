@@ -19,6 +19,7 @@
       deadnix
       #direnv
       dockerfile-language-server
+      dust
       fd
       #fishPlugins.forgit
       gh
@@ -34,6 +35,7 @@
       #orbstack # use brew'
       statix
       terminal-notifier
+      tldr
       tree # claude is always trying to use this
       trippy
       zinit

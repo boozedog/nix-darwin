@@ -32,11 +32,12 @@ build_icon_string() {
     if [ -z "$icons" ]; then
       icons="$icon_result"
     else
-      icons="$icons $icon_result"
+      icons="$icons$icon_result"
     fi
   done < <(get_workspace_apps "$workspace")
 
-  echo "$icons"
+  # Strip all whitespace that may have been introduced
+  echo "${icons}"
 }
 
 # Get the currently focused workspace
@@ -53,6 +54,7 @@ if [ "$SID" = "$FOCUSED" ]; then
       drawing=on \
       background.drawing=on \
       label="$APP_ICONS" \
+      label.padding_right=7 \
       label.drawing=on
   else
     sketchybar --set "$NAME" \
@@ -67,6 +69,7 @@ else
       drawing=on \
       background.drawing=off \
       label="$APP_ICONS" \
+      label.padding_right=7 \
       label.drawing=on
   else
     sketchybar --set "$NAME" \
