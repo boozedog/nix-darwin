@@ -22,7 +22,9 @@ let
       chrome-devtools = {
         type = "stdio";
         command = "npx";
-        args = [ "chrome-devtools-mcp@latest" ];
+        args = [
+          "chrome-devtools-mcp@latest"
+        ];
         env = { };
       };
       nixos = {

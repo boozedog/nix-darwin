@@ -71,6 +71,10 @@
           name = "macos";
           inherit (pkgs.fishPlugins.macos) src;
         }
+        {
+          name = "grc";
+          inherit (pkgs.fishPlugins.grc) src;
+        }
       ];
       shellAbbrs = {
         za = "zellij attach";

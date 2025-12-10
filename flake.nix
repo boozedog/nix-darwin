@@ -115,8 +115,8 @@
               claude-code
             ];
           }
-          ./modules/aerospace.nix
-          ./modules/sketchybar
+          ./home/modules/aerospace.nix
+          ./home/modules/sketchybar
           # In addition to adding modules in the style above, you can also
           # add modules inline like this. Delete this if unnecessary.
           # (

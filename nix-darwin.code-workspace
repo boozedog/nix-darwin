@@ -2,13 +2,18 @@
   "folders": [
     {
       "path": "."
+    },
+    {
+      "path": "../home-manager"
     }
   ],
   "settings": {
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nixd",
     "triggerTaskOnSave.tasks": {
-      "statix check": ["**/*.nix"]
+      "statix check": [
+        "**/*.nix"
+      ]
     }
   },
   "extensions": {

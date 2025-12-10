@@ -8,8 +8,11 @@
   networking.hostName = "mbp-m3-pro";
 
   nix.settings = {
+    trusted-users = [ "@admin" ];
     substituters = [ "https://claude-code.cachix.org" ];
     trusted-public-keys = [ "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk=" ];
+    extra-substituters = [ "https://devenv.cachix.org" ];
+    extra-trusted-public-keys = [ "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" ];
   };
 
   environment = {
@@ -17,14 +20,16 @@
       awk-language-server
       claude-monitor
       deadnix
-      #direnv
+      devenv
       dockerfile-language-server
+      duf
       dust
       fd
       #fishPlugins.forgit
       gh
       git
       git-extras
+      grc
       helix
       #komorebi-full
       nix-search-tv
@@ -130,7 +135,10 @@
   };
 
   programs = {
-    # direnv managed by home-manager with nix-direnv
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
     fish.enable = true;
     man.enable = lib.mkForce false;
     nix-index.enable = true;

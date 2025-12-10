@@ -48,10 +48,6 @@ let
     )
   );
 
-  windowTitleScript = pkgs.writeShellScript "sketchybar-window-title" (
-    builtins.readFile ./scripts/window-title.sh
-  );
-
 in
 {
   fonts.packages = [ pkgs.sketchybar-app-font ];
@@ -93,20 +89,6 @@ in
               click_script="aerospace workspace $sid" \
               script="${aerospaceScript} $sid"
       done
-
-      # Front app + window title
-      sketchybar --add item frontapp left \
-        --set frontapp \
-          padding_left=10 \
-          label.padding_right=7 \
-          script='sketchybar --set $NAME label="$INFO"' \
-        --subscribe frontapp front_app_switched
-
-      sketchybar --add item window_title left \
-        --set window_title \
-          label.color=${colors.subtle} \
-          script="${windowTitleScript}" \
-        --subscribe window_title front_app_switched window_focus title_change
 
       # Right side items with spacing
       sketchybar --add item battery right \

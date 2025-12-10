@@ -2,40 +2,66 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "statix check",
+      "label": "statix",
       "type": "shell",
       "command": "statix",
       "args": [
         "check",
         "--format=errfmt"
       ],
-      "group": "build",
-      "presentation": {
-        "reveal": "silent"
-      },
-      "runOptions": {
-        "runOn": "folderOpen" // Or "lineOnSave" for near-real-time on save
-      },
       "problemMatcher": {
-        "owner": "nix",
-        "severity": "warning",
+        "owner": "statix",
         "fileLocation": [
           "relative",
           "${workspaceFolder}"
         ],
+        "severity": "warning",
         "pattern": {
-          "regexp": "^(.+?):(\\d+):(\\d+): (warning|error): (.*)$",
+          "regexp": "^([^>]+)>(\\d+):(\\d+):([WE]):(\\d+):(.*)$",
           "file": 1,
           "line": 2,
           "column": 3,
-          "severity": 4,
-          "message": 5
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^Checking",
-          "endsPattern": "^Done"
+          "code": 5,
+          "message": 6
         }
+      },
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": "none",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "deadnix",
+      "type": "shell",
+      "command": "deadnix",
+      "args": [
+        "--output-format=human-readable"
+      ],
+      "problemMatcher": {
+        "owner": "deadnix",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "severity": "warning",
+        "pattern": {
+          "regexp": "^([^:]+):(\\d+):(\\d+)-(\\d+):(\\d+):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "endColumn": 5,
+          "message": 6
+        }
+      },
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": "none",
+      "runOptions": {
+        "runOn": "folderOpen"
       }
     }
   ]
