@@ -62,8 +62,8 @@ in
       sketchybar --bar height=28 color=${colors.bg} y_offset=2 position=top sticky=on padding_left=12 padding_right=12
 
       sketchybar --default \
-        icon.font="${font}:Bold:14.0" \
-        label.font="${font}:Medium:13.0" \
+        icon.font="${font}:Medium:13.0" \
+        label.font="${font}:Regular:13.0" \
         icon.color=${colors.fg} \
         label.color=${colors.fg}
 
@@ -90,6 +90,16 @@ in
               script="${aerospaceScript} $sid"
       done
 
+      # Front app
+      sketchybar --add item frontapp left \
+        --set frontapp \
+          padding_left=10 \
+          label.y_offset=1 \
+          label.padding_right=7 \
+          label.color=${colors.subtle} \
+          script='sketchybar --set $NAME label="$INFO"' \
+        --subscribe frontapp front_app_switched
+        
       # Right side items with spacing
       sketchybar --add item battery right \
         --set battery \

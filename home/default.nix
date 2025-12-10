@@ -96,7 +96,7 @@
         version = "0";
       }; # use brew to install
       profiles.default.userSettings = {
-        "window.title" = "$\{remoteName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
+        "window.title" = "$\{remoteName} $\{rootName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
         "workbench.activityBar.location" = "top";
       };
     };
