@@ -89,6 +89,17 @@
       '';
     };
     nix-search-tv.enableTelevisionIntegration = true;
+    vscode = {
+      enable = true;
+      package = pkgs.emptyDirectory // {
+        pname = "vscode";
+        version = "0";
+      }; # use brew to install
+      profiles.default.userSettings = {
+        "window.title" = "$\{remoteName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
+        "workbench.activityBar.location" = "top";
+      };
+    };
     television = {
       enable = true;
       enableBashIntegration = true;
