@@ -27,6 +27,17 @@ let
         ];
         env = { };
       };
+      deepwiki = {
+        type = "stdio";
+        command = "npx";
+        args = [
+          "mcp-remote@latest"
+          "https://mcp.deepwiki.com/mcp"
+        ];
+        env = { };
+        transport = "http";
+        scope = "user";
+      };
       nixos = {
         command = "uvx";
         args = [ "mcp-nixos" ];

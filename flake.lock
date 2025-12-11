@@ -324,6 +324,26 @@
         "type": "github"
       }
     },
+    "opencode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765477223,
+        "narHash": "sha256-n8i/ECeRAyrFXZwb5dMehChcbMaSFoUsj6HniPOC9iE=",
+        "owner": "sst",
+        "repo": "opencode",
+        "rev": "80e04be84fafd7e504a6f2fdfb08cb4961c93d0a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sst",
+        "repo": "opencode",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -381,6 +401,7 @@
         ],
         "nixvim": "nixvim",
         "nox": "nox",
+        "opencode": "opencode",
         "pre-commit-hooks": "pre-commit-hooks_2",
         "srvos": "srvos"
       }

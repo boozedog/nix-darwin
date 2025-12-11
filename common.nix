@@ -91,7 +91,7 @@
       "lazydocker"
       #"lazygit" # using forgit
       #"komorebi-for-mac-nightly" # use nix flake for this
-      "opencode"
+      #"opencode"
       "pnpm"
       "prettier"
       #"ripgrep" # use nix

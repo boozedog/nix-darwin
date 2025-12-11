@@ -38,6 +38,10 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode = {
+      url = "github:sst/opencode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Flake outputs
@@ -46,6 +50,8 @@
       self,
       srvos,
       nix-darwin,
+      nox,
+      opencode,
       ...
     }@inputs:
     let
@@ -117,8 +123,9 @@
             #./modules/claude-code.nix
             {
               environment.systemPackages = [
-                inputs.nox.packages.${system}.default
+                nox.packages.${system}.default
                 claude-code
+                opencode.packages.${system}.default
               ];
             }
             ./home/modules/aerospace.nix
@@ -151,8 +158,9 @@
             #./modules/claude-code.nix
             {
               environment.systemPackages = [
-                inputs.nox.packages.${system}.default
+                nox.packages.${system}.default
                 claude-code
+                opencode.packages.${system}.default
               ];
             }
             ./home/modules/aerospace.nix
@@ -187,8 +195,9 @@
             #./modules/claude-code.nix
             {
               environment.systemPackages = [
-                inputs.nox.packages.${system}.default
+                nox.packages.${system}.default
                 claude-code
+                opencode.packages.${system}.default
               ];
             }
             ./home/modules/aerospace.nix
