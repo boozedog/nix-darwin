@@ -3,16 +3,15 @@
 
   # Flake inputs
   inputs = {
-    # Stable Nixpkgs (use 0.1 for unstable)
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
-    # Stable nix-darwin (use 0.1 for unstable)
+    srvos.url = "github:nix-community/srvos";
+    nixpkgs.follows = "srvos/nixpkgs";
     nix-darwin = {
-      url = "https://flakehub.com/f/nix-darwin/nix-darwin/0.1";
+      url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      #inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -43,7 +42,7 @@
 
   # Flake outputs
   outputs =
-    { self, ... }@inputs:
+    { self, srvos, nix-darwin, ... }@inputs:
     let
       # The values for `username` and `system` supplied here are used to construct the hostname
       # for your system, of the form `${username}-${system}`. Set these values to what you'd like
@@ -91,6 +90,8 @@
           modules = [
             { nixpkgs.hostPlatform = system; }
             { nixpkgs.config.allowUnfree = true; }
+            srvos.darwinModules.desktop
+            srvos.darwinModules.mixins-terminfo
             self.darwinModules.base
             ./common.nix
             ./mbp-m3-max/configuration.nix
@@ -124,6 +125,8 @@
         "mbp-m1" = inputs.nix-darwin.lib.darwinSystem {
           modules = [
             { nixpkgs.hostPlatform = system; }
+            srvos.darwinModules.desktop
+            srvos.darwinModules.mixins-terminfo
             self.darwinModules.base
             ./common.nix
             ./mbp-m1/configuration.nix
@@ -157,6 +160,8 @@
           modules = [
             { nixpkgs.hostPlatform = system; }
             { nixpkgs.config.allowUnfree = true; }
+            srvos.darwinModules.desktop
+            srvos.darwinModules.mixins-terminfo
             self.darwinModules.base
             ./common.nix
             ./mbp-m3-pro/configuration.nix
@@ -198,8 +203,8 @@
             #   }
             # )
           ];
+          specialArgs = { inherit inputs self; };
         };
-        specialArgs = { inherit inputs self; };
       };
 
       homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
@@ -224,6 +229,9 @@
           # Required for nix-darwin to work
           system.stateVersion = 1;
 
+          # Match the actual nixbld group ID from existing Nix installation
+          ids.gids.nixbld = 350;
+
           users.users.${username} = {
             name = username;
             home = "/Users/${username}";
@@ -231,7 +239,7 @@
           };
 
           # Determinate Nix is installed, let it manage nix
-          nix.enable = false;
+          #nix.enable = false;
         };
 
         # Add other module outputs here
