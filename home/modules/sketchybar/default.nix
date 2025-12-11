@@ -27,6 +27,10 @@ let
     builtins.readFile ./scripts/clock-click.sh
   );
 
+  memoryScript = pkgs.writeShellScript "sketchybar-memory" (
+    builtins.readFile ./scripts/memory.sh
+  );
+
   batteryScript = pkgs.writeShellScript "sketchybar-battery" (
     builtins.replaceStrings
       [
@@ -129,6 +133,12 @@ in
           update_freq=30 \
           script="${networkSpeedScript}" \
           click_script="${networkClickScript}"
+
+      sketchybar --add item memory right \
+        --set memory \
+          padding_left=24 \
+          update_freq=30 \
+          script="${memoryScript}"
 
       sketchybar --update
     '';

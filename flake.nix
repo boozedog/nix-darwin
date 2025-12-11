@@ -86,83 +86,119 @@
     in
     {
       # nix-darwin configuration output
-      darwinConfigurations."mbp-m1" = inputs.nix-darwin.lib.darwinSystem {
-        modules = [
-          { nixpkgs.hostPlatform = system; }
-          self.darwinModules.base
-          ./common.nix
-          ./mbp-m1/configuration.nix
-          inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${username}.imports = homeModulesDarwin;
-              sharedModules = [ inputs.nixvim.homeModules.nixvim ];
-              extraSpecialArgs = { inherit username; };
-            };
-          }
-          ./ns.nix
-          inputs.agenix.darwinModules.default
-          ./secrets
-          #./modules/claude-code.nix
-          {
-            environment.systemPackages = [
-              inputs.nox.packages.${system}.default
-              claude-code
-            ];
-          }
-          ./home/modules/aerospace.nix
-          ./home/modules/sketchybar
-          ./mbp-m1/home.nix
-        ];
-        specialArgs = { inherit inputs self; };
-      };
-      darwinConfigurations."mbp-m3-pro" = inputs.nix-darwin.lib.darwinSystem {
-        modules = [
-          { nixpkgs.hostPlatform = system; }
-          { nixpkgs.config.allowUnfree = true; }
-          self.darwinModules.base
-          ./common.nix
-          ./mbp-m3-pro/configuration.nix
-          # inputs.nixvim.nixDarwinModules.nixvim
-          inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${username}.imports = homeModulesDarwin;
-              sharedModules = [ inputs.nixvim.homeModules.nixvim ];
-              extraSpecialArgs = { inherit username; };
-            };
-          }
-          ./ns.nix
-          inputs.agenix.darwinModules.default
-          ./secrets
-          #./modules/claude-code.nix
-          {
-            environment.systemPackages = [
-              inputs.nox.packages.${system}.default
-              claude-code
-            ];
-          }
-          ./home/modules/aerospace.nix
-          ./home/modules/sketchybar
-          ./mbp-m3-pro/home.nix
-          # In addition to adding modules in the style above, you can also
-          # add modules inline like this. Delete this if unnecessary.
-          # (
-          #   {
-          #     config,
-          #     pkgs,
-          #     lib,
-          #     ...
-          #   }:
-          #   {
-          #     # Inline nix-darwin configuration
-          #   }
-          # )
-        ];
+      darwinConfigurations = {
+        "mbp-m3-max" = inputs.nix-darwin.lib.darwinSystem {
+          modules = [
+            { nixpkgs.hostPlatform = system; }
+            { nixpkgs.config.allowUnfree = true; }
+            self.darwinModules.base
+            ./common.nix
+            ./mbp-m3-max/configuration.nix
+            # inputs.nixvim.nixDarwinModules.nixvim
+            inputs.home-manager.darwinModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username}.imports = homeModulesDarwin;
+                sharedModules = [ inputs.nixvim.homeModules.nixvim ];
+                extraSpecialArgs = { inherit username; };
+              };
+            }
+            ./ns.nix
+            inputs.agenix.darwinModules.default
+            ./secrets
+            #./modules/claude-code.nix
+            {
+              environment.systemPackages = [
+                inputs.nox.packages.${system}.default
+                claude-code
+              ];
+            }
+            ./home/modules/aerospace.nix
+            ./home/modules/sketchybar
+            ./mbp-m3-pro/home.nix
+          ];
+          specialArgs = { inherit inputs self; };
+        };
+        "mbp-m1" = inputs.nix-darwin.lib.darwinSystem {
+          modules = [
+            { nixpkgs.hostPlatform = system; }
+            self.darwinModules.base
+            ./common.nix
+            ./mbp-m1/configuration.nix
+            inputs.home-manager.darwinModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username}.imports = homeModulesDarwin;
+                sharedModules = [ inputs.nixvim.homeModules.nixvim ];
+                extraSpecialArgs = { inherit username; };
+              };
+            }
+            ./ns.nix
+            inputs.agenix.darwinModules.default
+            ./secrets
+            #./modules/claude-code.nix
+            {
+              environment.systemPackages = [
+                inputs.nox.packages.${system}.default
+                claude-code
+              ];
+            }
+            ./home/modules/aerospace.nix
+            ./home/modules/sketchybar
+            ./mbp-m1/home.nix
+          ];
+          specialArgs = { inherit inputs self; };
+        };
+        "mbp-m3-pro" = inputs.nix-darwin.lib.darwinSystem {
+          modules = [
+            { nixpkgs.hostPlatform = system; }
+            { nixpkgs.config.allowUnfree = true; }
+            self.darwinModules.base
+            ./common.nix
+            ./mbp-m3-pro/configuration.nix
+            # inputs.nixvim.nixDarwinModules.nixvim
+            inputs.home-manager.darwinModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username}.imports = homeModulesDarwin;
+                sharedModules = [ inputs.nixvim.homeModules.nixvim ];
+                extraSpecialArgs = { inherit username; };
+              };
+            }
+            ./ns.nix
+            inputs.agenix.darwinModules.default
+            ./secrets
+            #./modules/claude-code.nix
+            {
+              environment.systemPackages = [
+                inputs.nox.packages.${system}.default
+                claude-code
+              ];
+            }
+            ./home/modules/aerospace.nix
+            ./home/modules/sketchybar
+            ./mbp-m3-pro/home.nix
+            # In addition to adding modules in the style above, you can also
+            # add modules inline like this. Delete this if unnecessary.
+            # (
+            #   {
+            #     config,
+            #     pkgs,
+            #     lib,
+            #     ...
+            #   }:
+            #   {
+            #     # Inline nix-darwin configuration
+            #   }
+            # )
+          ];
+        };
         specialArgs = { inherit inputs self; };
       };
 

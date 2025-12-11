@@ -6,6 +6,7 @@
 }:
 {
   nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
     trusted-users = [ "@admin" ];
     substituters = [
       "https://claude-code.cachix.org"
@@ -261,6 +262,7 @@
         reduceTransparency = true;
       };
       WindowManager = {
+        GloballyEnabled = false; # disable stage manager
         EnableTilingByEdgeDrag = false;
         EnableTilingOptionAccelerator = false;
         EnableTopTilingByEdgeDrag = false;
