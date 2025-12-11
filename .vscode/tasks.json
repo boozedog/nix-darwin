@@ -36,10 +36,7 @@
     {
       "label": "deadnix",
       "type": "shell",
-      "command": "deadnix",
-      "args": [
-        "--output-format=human-readable"
-      ],
+      "command": "deadnix --output-format=json | jq -r '.file as $f | .results[] | \"\\($f):\\(.line):\\(.column):\\(.endColumn): \\(.message)\"'",
       "problemMatcher": {
         "owner": "deadnix",
         "fileLocation": [
@@ -48,12 +45,12 @@
         ],
         "severity": "warning",
         "pattern": {
-          "regexp": "^([^:]+):(\\d+):(\\d+)-(\\d+):(\\d+):\\s+(.*)$",
+          "regexp": "^([^:]+):(\\d+):(\\d+):(\\d+):\\s+(.*)$",
           "file": 1,
           "line": 2,
           "column": 3,
-          "endColumn": 5,
-          "message": 6
+          "endColumn": 4,
+          "message": 5
         }
       },
       "presentation": {

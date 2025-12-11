@@ -96,7 +96,11 @@
         version = "0";
       }; # use brew to install
       profiles.default.userSettings = {
-        "window.title" = "$\{remoteName} $\{rootName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
+        "editor.fontFamily" = "'Maple Mono NL NF', Menlo, Monaco, 'Courier New', monospace";
+        "editor.fontSize" = 12.999999999999999;
+        "editor.formatOnSave" = true;
+        "window.title" =
+          "$\{remoteName} $\{rootName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
         "workbench.activityBar.location" = "top";
       };
     };

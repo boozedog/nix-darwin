@@ -5,14 +5,23 @@
     },
     {
       "path": "../home-manager"
+    },
+    {
+      "path": "../nixos-orbstack"
     }
   ],
   "settings": {
+    "[nix]": {
+      "editor.defaultFormatter": "jnoortheen.nix-ide",
+    },
     "nix.enableLanguageServer": true,
-    "nix.serverPath": "nixd",
+    "nix.serverPath": "nil",
     "triggerTaskOnSave.tasks": {
-      "statix check": [
-        "**/*.nix"
+      "deadnix": [
+        "*.nix"
+      ],
+      "statix": [
+        "*.nix"
       ]
     }
   },
@@ -20,7 +29,8 @@
     "recommendations": [
       "gruntfuggly.triggertaskonsave",
       "davidanson.vscode-markdownlint",
-      "jnoortheen.nix-ide"
+      "jnoortheen.nix-ide",
+      "usernamehw.errorlens",
     ]
   }
 }

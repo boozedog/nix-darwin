@@ -6,7 +6,10 @@
 }:
 {
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     trusted-users = [ "@admin" ];
     substituters = [
       "https://claude-code.cachix.org"
@@ -34,6 +37,7 @@
       grc
       helix
       #komorebi-full
+      nil
       nix-search-tv
       nixd
       nixfmt
@@ -238,8 +242,8 @@
         autohide-time-modifier = 0.0;
         expose-animation-duration = 0.0;
         magnification = true;
-        persistent-apps = [];
-        persistent-others = [];
+        persistent-apps = [ ];
+        persistent-others = [ ];
         show-recents = false;
         wvous-br-corner = 1;
       };

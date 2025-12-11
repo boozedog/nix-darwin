@@ -42,7 +42,12 @@
 
   # Flake outputs
   outputs =
-    { self, srvos, nix-darwin, ... }@inputs:
+    {
+      self,
+      srvos,
+      nix-darwin,
+      ...
+    }@inputs:
     let
       # The values for `username` and `system` supplied here are used to construct the hostname
       # for your system, of the form `${username}-${system}`. Set these values to what you'd like
@@ -86,7 +91,7 @@
     {
       # nix-darwin configuration output
       darwinConfigurations = {
-        "mbp-m3-max" = inputs.nix-darwin.lib.darwinSystem {
+        "mbp-m3-max" = nix-darwin.lib.darwinSystem {
           modules = [
             { nixpkgs.hostPlatform = system; }
             { nixpkgs.config.allowUnfree = true; }
@@ -122,7 +127,7 @@
           ];
           specialArgs = { inherit inputs self; };
         };
-        "mbp-m1" = inputs.nix-darwin.lib.darwinSystem {
+        "mbp-m1" = nix-darwin.lib.darwinSystem {
           modules = [
             { nixpkgs.hostPlatform = system; }
             srvos.darwinModules.desktop
@@ -156,7 +161,7 @@
           ];
           specialArgs = { inherit inputs self; };
         };
-        "mbp-m3-pro" = inputs.nix-darwin.lib.darwinSystem {
+        "mbp-m3-pro" = nix-darwin.lib.darwinSystem {
           modules = [
             { nixpkgs.hostPlatform = system; }
             { nixpkgs.config.allowUnfree = true; }
@@ -254,7 +259,7 @@
             name = "apply-nix-darwin-configuration";
             runtimeInputs = [
               # Make the darwin-rebuild package available in the script
-              inputs.nix-darwin.packages.${system}.darwin-rebuild
+              nix-darwin.packages.${system}.darwin-rebuild
             ];
             text = ''
               echo "> Applying nix-darwin configuration..."
