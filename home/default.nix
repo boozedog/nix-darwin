@@ -96,6 +96,7 @@
         version = "0";
       }; # use brew to install
       profiles.default.userSettings = {
+        "claudeCode.preferredLocation" = "panel";
         "editor.fontFamily" = "'Maple Mono NL NF', Menlo, Monaco, 'Courier New', monospace";
         "editor.fontSize" = 12.999999999999999;
         "editor.formatOnSave" = true;

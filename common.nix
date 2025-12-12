@@ -12,10 +12,14 @@
     ];
     trusted-users = [ "@admin" ];
     substituters = [
+    ];
+    trusted-public-keys = [
+    ];
+    extra-substituters = [
       "https://claude-code.cachix.org"
       "https://devenv.cachix.org"
     ];
-    trusted-public-keys = [
+    extra-trusted-public-keys = [
       "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
     ];
