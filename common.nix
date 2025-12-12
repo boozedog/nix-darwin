@@ -119,6 +119,7 @@
       "brave-browser"
       "claude"
       #"claude-code" # use nix derivation
+      "cursor"
       "discord"
       "ghostty"
       "google-chrome"
@@ -265,10 +266,10 @@
         NSWindowResizeTime = 0.0;
       };
       # note: following requires full disk access
-      universalaccess = {
-        reduceMotion = true;
-        reduceTransparency = true;
-      };
+      # universalaccess = {
+      #   reduceMotion = true;
+      #   reduceTransparency = true;
+      # };
       WindowManager = {
         GloballyEnabled = false; # disable stage manager
         EnableTilingByEdgeDrag = false;

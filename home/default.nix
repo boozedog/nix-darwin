@@ -100,8 +100,8 @@
         "editor.fontFamily" = "'Maple Mono NL NF', Menlo, Monaco, 'Courier New', monospace";
         "editor.fontSize" = 12.999999999999999;
         "editor.formatOnSave" = true;
-        "window.title" =
-          "$\{remoteName} $\{rootName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
+        "explorer.sortOrder" = "mixed";
+        "window.title" = "$\{rootName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
         "workbench.activityBar.location" = "top";
       };
     };
