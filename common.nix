@@ -27,6 +27,7 @@
   environment = {
     systemPackages = with pkgs; [
       awk-language-server
+      bun
       claude-monitor
       deadnix
       devenv

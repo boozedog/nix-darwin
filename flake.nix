@@ -42,6 +42,10 @@
       url = "github:sst/opencode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # bun2nix = {
+    #   url = "github:nix-community/bun2nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   # Flake outputs
@@ -52,6 +56,7 @@
       nix-darwin,
       nox,
       opencode,
+      # bun2nix,
       ...
     }@inputs:
     let
@@ -73,6 +78,9 @@
 
       # Local packages
       claude-code = pkgs.callPackage ./packages/claude-code.nix { };
+      # btca = pkgs.callPackage ./packages/btca {
+      #   bun2nix = bun2nix.packages.${system}.bun2nix;
+      # };
 
       # Home-manager modules (cross-platform, from external repo)
       homeModules = inputs.home-manager-config.homeModuleList;
@@ -126,6 +134,7 @@
                 nox.packages.${system}.default
                 claude-code
                 opencode.packages.${system}.default
+                # btca
               ];
             }
             ./home/modules/aerospace.nix
@@ -161,6 +170,7 @@
                 nox.packages.${system}.default
                 claude-code
                 opencode.packages.${system}.default
+                # btca
               ];
             }
             ./home/modules/aerospace.nix
@@ -198,6 +208,7 @@
                 nox.packages.${system}.default
                 claude-code
                 opencode.packages.${system}.default
+                # btca
               ];
             }
             ./home/modules/aerospace.nix
@@ -296,6 +307,9 @@
           echo "Pre-commit hooks installed: statix"
         '';
       };
+
+      # Expose btca for standalone building/testing
+      # packages.${system}.btca = btca;
 
     };
 }
