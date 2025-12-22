@@ -1,15 +1,9 @@
 { pkgs, ... }:
 let
-  brave-search-mcp = pkgs.callPackage ../packages/brave-search-mcp.nix { };
+  statuslineScript = ./claude-statusline.sh;
 
   mcpConfig = builtins.toJSON {
     mcpServers = {
-      brave-search = {
-        type = "stdio";
-        command = "${brave-search-mcp}/bin/brave-search-mcp";
-        args = [ ];
-        env = { };
-      };
       context7 = {
         type = "stdio";
         command = "npx";
@@ -56,10 +50,26 @@ in
   # Claude Code installed via nix derivation (packages/claude-code.nix)
   home = {
     # uv provides uvx, needed for mcp-nixos server
-    packages = [ pkgs.uv ];
+    # bc needed for statusline calculations
+    packages = [
+      pkgs.uv
+      pkgs.bc
+    ];
+
+    # Statusline script for Claude Code
+    file.".claude/statusline.sh" = {
+      source = statuslineScript;
+      executable = true;
+    };
 
     # Settings go in .claude/settings.json (plugins, preferences)
     file.".claude/settings.json".text = builtins.toJSON {
+      # Status line showing comprehensive session info
+      statusLine = {
+        type = "command";
+        command = "~/.claude/statusline.sh";
+        padding = 0;
+      };
       # enabledPlugins = {
       #   "frontend-design@claude-code-plugins" = true;
       # };

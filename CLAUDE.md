@@ -1,6 +1,5 @@
 # CLAUDE.md
 
-- for any web search, use the brave-search mcp
 - for any interaction with github, use github mcp
   - use github mcp in read-only fashion unless explicitly authorized
 - after editing a nix file
