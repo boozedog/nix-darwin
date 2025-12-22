@@ -60,10 +60,23 @@ in
 
     # Settings go in .claude/settings.json (plugins, preferences)
     file.".claude/settings.json".text = builtins.toJSON {
-      enabledPlugins = {
-        "frontend-design@claude-code-plugins" = true;
-      };
+      # enabledPlugins = {
+      #   "frontend-design@claude-code-plugins" = true;
+      # };
       alwaysThinkingEnabled = true;
+      preferredNotifChannel = "terminal_bell";
+      hooks = {
+        Stop = [
+          {
+            hooks = [
+              {
+                type = "command";
+                command = "say 'Task complete'";
+              }
+            ];
+          }
+        ];
+      };
     };
 
     # MCP servers must be configured in ~/.claude.json (not settings.json)

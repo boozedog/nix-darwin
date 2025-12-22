@@ -8,7 +8,7 @@ _: {
     #installBatSyntax = true;
     #installVimSyntax = true;
     settings = {
-      #bell-features = "audio,system,title";
+      bell-features = "audio,system,title";
       font-family = "Maple Mono NL NF";
       # support claude code shift+enter
       keybind = "shift+enter=text:\\x1b\\r";

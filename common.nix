@@ -124,7 +124,7 @@
       "cursor"
       "discord"
       "disk-drill"
-      "ghostty"
+      #"ghostty" # using tip download for now
       "google-chrome"
       #"hyper" # using ghostty
       #"kitty" # using ghostty
