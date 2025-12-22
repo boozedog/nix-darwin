@@ -89,10 +89,11 @@
       #"duf" # use nix
       #"eza" # use nix
       "fish-lsp"
-      #"forgit" # use nix
+      "forgit"
       #"fzf" # use nix
       #"gping" # using trippy
       #"helix" # use nix
+      "immich-cli"
       "lazydocker"
       #"lazygit" # using forgit
       #"komorebi-for-mac-nightly" # use nix flake for this
@@ -122,6 +123,7 @@
       #"claude-code" # use nix derivation
       "cursor"
       "discord"
+      "disk-drill"
       "ghostty"
       "google-chrome"
       #"hyper" # using ghostty
@@ -133,7 +135,7 @@
       "orbstack"
       "postgres-unofficial"
       "raycast"
-      "steam"
+      #"steam"
       "tailscale-app"
       #"ubersicht" # using sketchybar and not simple-bar
       #"ungoogled-chromium" # using brave

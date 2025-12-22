@@ -12,13 +12,13 @@
 }:
 
 let
-  version = "2.0.61";
+  version = "2.0.75";
 
   # Pre-fetch the npm package as a Fixed Output Derivation
   # To update: nix-prefetch-url https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-VERSION.tgz
   claudeCodeTarball = fetchurl {
     url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-    sha256 = "16ivzy75m52r9yra2j3r256yxvjk8kxv4ngiql6y76jbf0j23s76";
+    sha256 = "sha256-gQzf+LG/wdIdsWSIfNkSrk+NQYI9ITZKAs0UeNE7g2I=";
   };
 in
 stdenv.mkDerivation {
