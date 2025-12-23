@@ -62,7 +62,7 @@ in
         workspaces = lists.range 1 9;
         assignment =
           ws:
-          if ws <= 5 then
+          if ws <= 3 then
             "main"
           else
             [

@@ -48,7 +48,8 @@
       nixfmt
       nodePackages.npm-check-updates
       nodePackages.vscode-json-languageserver
-      #orbstack # use brew'
+      #orbstack # use brew
+      rsync
       statix
       terminal-notifier
       tldr
