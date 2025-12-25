@@ -117,6 +117,7 @@
       #"alacritty" # using ghostty
       "alt-tab"
       #"amethyst"
+      "android-platform-tools"
       "betterdisplay"
       "beyond-compare"
       "brave-browser"
