@@ -114,22 +114,24 @@
       #"zellij"
     ];
     casks = [
-      #"alacritty" # using ghostty
+      "alacritty"
       "alt-tab"
       #"amethyst"
       "android-platform-tools"
       "betterdisplay"
       "beyond-compare"
       "brave-browser"
+      #"bruno" # using yaak
       "claude"
       #"claude-code" # use nix derivation
       "cursor"
       "discord"
       "disk-drill"
+      "drawio"
       #"ghostty" # using tip download for now
       "google-chrome"
       #"hyper" # using ghostty
-      #"kitty" # using ghostty
+      "kitty"
       "localsend"
       "microsoft-edge"
       "numi"

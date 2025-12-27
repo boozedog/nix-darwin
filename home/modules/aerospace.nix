@@ -51,6 +51,14 @@ in
             "move-node-to-workspace ${ws}"
         );
         layoutBindings = {
+          "alt-h" = "focus left";
+          "alt-j" = "focus down";
+          "alt-k" = "focus up";
+          "alt-l" = "focus right";
+          "alt-shift-h" = "move left";
+          "alt-shift-j" = "move down";
+          "alt-shift-k" = "move up";
+          "alt-shift-l" = "move right";
           "alt-slash" = "layout tiles horizontal vertical"; # Default tiling
           "alt-comma" = "layout accordion horizontal"; # Horizontal accordion
         };
