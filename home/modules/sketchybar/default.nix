@@ -27,9 +27,7 @@ let
     builtins.readFile ./scripts/clock-click.sh
   );
 
-  memoryScript = pkgs.writeShellScript "sketchybar-memory" (
-    builtins.readFile ./scripts/memory.sh
-  );
+  memoryScript = pkgs.writeShellScript "sketchybar-memory" (builtins.readFile ./scripts/memory.sh);
 
   batteryScript = pkgs.writeShellScript "sketchybar-battery" (
     builtins.replaceStrings
@@ -50,6 +48,10 @@ let
     builtins.replaceStrings [ "@iconMapScript@" ] [ iconMapScript ] (
       builtins.readFile ./scripts/aerospace.sh
     )
+  );
+
+  aerospaceScriptSimple = pkgs.writeShellScript "sketchybar-aerospace-simple" (
+    builtins.readFile ./scripts/aerospace-simple.sh
   );
 
 in
@@ -75,9 +77,30 @@ in
       sketchybar --add event aerospace_workspace_change
 
       for sid in $(aerospace list-workspaces --all); do
+          # Main display (1): numbers/letters only, no app labels
+          sketchybar --add item space.$sid.main left \
+              --subscribe space.$sid.main aerospace_workspace_change front_app_switched \
+              --set space.$sid.main \
+              display=1 \
+              background.color=0x40ffffff \
+              background.corner_radius=5 \
+              background.height=25 \
+              background.drawing=off \
+              background.padding_left=3 \
+              background.padding_right=3 \
+              icon="$sid" \
+              icon.y_offset=1 \
+              icon.padding_left=7 \
+              icon.padding_right=7 \
+              label.drawing=off \
+              click_script="aerospace workspace $sid" \
+              script="${aerospaceScriptSimple} $sid"
+
+          # Secondary display (2): full labels with app icons
           sketchybar --add item space.$sid left \
               --subscribe space.$sid aerospace_workspace_change front_app_switched \
               --set space.$sid \
+              display=2 \
               background.color=0x40ffffff \
               background.corner_radius=5 \
               background.height=25 \

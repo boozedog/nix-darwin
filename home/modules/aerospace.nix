@@ -30,7 +30,14 @@ in
 
     mode.main.binding =
       let
-        workspaces = lists.map toString (lists.range 1 9); # ++ ["A"];
+        workspaces = lists.map toString (lists.range 1 9) ++ [
+          "A"
+          "B"
+          "C"
+          "D"
+          "E"
+          "F"
+        ];
         forAllWorkspaces =
           keyfn: actionfn:
           builtins.listToAttrs (
@@ -67,22 +74,32 @@ in
 
     workspace-to-monitor-force-assignment =
       let
-        workspaces = lists.range 1 9;
-        assignment =
-          ws:
-          if ws <= 3 then
-            "main"
-          else
-            [
-              "secondary"
-              "main"
-            ];
+        numericWorkspaces = lists.range 1 9;
+        letterWorkspaces = [
+          "A"
+          "B"
+          "C"
+          "D"
+          "E"
+          "F"
+        ];
+        secondaryMonitor = [
+          "secondary"
+          "main"
+        ];
+        numericAssignments = listToAttrs (
+          lists.map (ws: {
+            name = builtins.toString ws;
+            value = if ws <= 3 then "main" else secondaryMonitor;
+          }) numericWorkspaces
+        );
+        letterAssignments = listToAttrs (
+          lists.map (ws: {
+            name = ws;
+            value = secondaryMonitor;
+          }) letterWorkspaces
+        );
       in
-      listToAttrs (
-        lists.map (ws: {
-          name = builtins.toString ws;
-          value = assignment ws;
-        }) workspaces
-      );
+      numericAssignments // letterAssignments;
   };
 }

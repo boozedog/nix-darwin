@@ -95,9 +95,10 @@
       #"gping" # using trippy
       #"helix" # use nix
       "immich-cli"
+      #"komorebi-for-mac-nightly" # use nix flake for this
       "lazydocker"
       #"lazygit" # using forgit
-      #"komorebi-for-mac-nightly" # use nix flake for this
+      "mole"
       #"opencode"
       "pnpm"
       "prettier"
