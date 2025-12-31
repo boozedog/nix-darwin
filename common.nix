@@ -114,7 +114,7 @@
       #"zellij"
     ];
     casks = [
-      "alacritty"
+      #"alacritty" # use nix
       "alt-tab"
       #"amethyst"
       "android-platform-tools"
@@ -128,7 +128,7 @@
       "discord"
       "disk-drill"
       "drawio"
-      #"ghostty" # using tip download for now
+      "ghostty"
       "google-chrome"
       #"hyper" # using ghostty
       "kitty"

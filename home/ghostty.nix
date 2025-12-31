@@ -10,6 +10,7 @@ _: {
     settings = {
       bell-features = "audio,system,title";
       font-family = "Maple Mono NL NF";
+      font-size = 16;
       # support claude code shift+enter
       keybind = "shift+enter=text:\\x1b\\r";
       # support alt key in tmux

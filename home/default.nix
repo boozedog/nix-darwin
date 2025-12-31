@@ -19,6 +19,27 @@
 
   programs = {
     # note: aerospace is handled by nix-darwin
+    alacritty = {
+      enable = true;
+      settings = {
+        font.size = 16;
+        font.normal.family = "Maple Mono NL NF";
+        window = {
+          decorations = "none";
+          padding = {
+            x = 16;
+            y = 16;
+          };
+        };
+        keyboard.bindings = [
+          {
+            key = "Return";
+            mods = "Shift";
+            chars = "\n";
+          }
+        ];
+      };
+    };
     atuin = {
       enable = true;
       enableFishIntegration = true;
@@ -88,7 +109,25 @@
         end
       '';
     };
+    lazygit = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      enableZshIntegration = true;
+    };
     nix-search-tv.enableTelevisionIntegration = true;
+    television = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      enableZshIntegration = true;
+      settings = {
+        shell_integration = {
+          smart_autocomplete_keybinding = "ctrl-t";
+          shell_history_keybinding = "ctrl-y";
+        };
+      };
+    };
     vscode = {
       enable = true;
       package = pkgs.emptyDirectory // {
@@ -104,12 +143,6 @@
         "window.title" = "$\{rootName} [$\{activeRepositoryBranchName}] $\{activeEditorShort} $\{dirty}";
         "workbench.activityBar.location" = "top";
       };
-    };
-    television = {
-      enable = true;
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-      enableZshIntegration = true;
     };
     zellij = {
       enable = true;
