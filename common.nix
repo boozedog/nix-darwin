@@ -98,6 +98,7 @@
       #"komorebi-for-mac-nightly" # use nix flake for this
       "lazydocker"
       #"lazygit" # using forgit
+      "mas"
       "mole"
       #"opencode"
       "pnpm"
