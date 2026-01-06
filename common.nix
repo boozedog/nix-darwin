@@ -120,7 +120,7 @@
       "alt-tab"
       #"amethyst"
       "android-platform-tools"
-      "betterdisplay"
+      #"betterdisplay"
       "beyond-compare"
       "brave-browser"
       #"bruno" # using yaak
